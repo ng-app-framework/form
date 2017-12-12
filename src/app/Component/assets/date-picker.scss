@@ -1,0 +1,12 @@
+.bs-datepicker-body td[role="gridcell"] .disabled {
+    color: #888888;
+}
+
+.date-picker input.form-control {
+    flex-grow: inherit;
+    min-width: 150px;
+}
+
+bs-datepicker-container {
+    z-index: 900;
+}

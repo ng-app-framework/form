@@ -1,0 +1,24 @@
+.check-box {
+    position: relative;
+    input[type="checkbox"] {
+        pointer-events: none;
+
+    }
+    .row {
+        align-items: center;
+        cursor:pointer;
+        .checkbox-label {
+            line-height:1.5em;
+        }
+        .checkbox-container {
+            padding:5px;
+        }
+        .checkbox-label:not([hidden]) + .checkbox-container {
+            text-align:right;
+        }
+        .checkbox-label, .checkbox-container {
+            padding-top:5px;
+            padding-bottom:5px;
+        }
+    }
+}
