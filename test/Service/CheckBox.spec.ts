@@ -1,5 +1,5 @@
 import {EventEmitter} from "@angular/core";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {CheckBox} from "../../src/app/Service/Impl/CheckBox";
 
 describe('Module: Form', () => {

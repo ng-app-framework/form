@@ -1,5 +1,5 @@
 import {Searcher} from "./Searcher";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {Async, Value} from "@ng-app-framework/core";
 import 'rxjs/Rx';
 

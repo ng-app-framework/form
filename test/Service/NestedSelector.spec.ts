@@ -1,5 +1,5 @@
 import {NestedSelector} from "../../src/app/Service/Impl/NestedSelector";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {CheckBox} from "../../src/app/Service/Impl/CheckBox";
 
 describe('Module: Form', () => {

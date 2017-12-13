@@ -1,5 +1,5 @@
 import {MultiSelector} from "./MultiSelector";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {CheckBox} from "./CheckBox";
 import {Async, Value} from "@ng-app-framework/core";
 import 'rxjs/Rx';
