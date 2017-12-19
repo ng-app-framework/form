@@ -1,0 +1,15 @@
+@import "field";
+check-box {
+    position: relative;
+    input[type="checkbox"] {
+        pointer-events: none;
+
+    }
+    .check-container.label-above {
+        display:inline-block;
+        .input-group-addon, .input-group-btn {
+            width: inherit;
+            display:inline-block;
+        }
+    }
+}

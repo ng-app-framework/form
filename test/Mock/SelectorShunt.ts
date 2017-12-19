@@ -1,4 +1,4 @@
-import {Selector} from "../../src/app/Service/Impl/Selector";
+import {Selector} from "../../src/lib/Service/Impl/Selector";
 
 export class SelectorShunt extends Selector {
 

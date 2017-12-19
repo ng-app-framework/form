@@ -1,0 +1,155 @@
+import {
+    ViewEncapsulation, Component, Input, EventEmitter, Output, ViewChild, OnInit, OnDestroy,
+    Inject, Optional, Injector
+} from '@angular/core';
+import {
+    NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR
+} from "@angular/forms";
+import {OnChange} from "@ng-app-framework/core";
+import {Observable} from "rxjs/Rx";
+import {NgFormControl} from "../NgFormControl";
+import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredCheckBoxValidator';
+
+
+@Component({
+    selector     : 'check-box',
+    template     : `
+        <div class="form-group">
+            <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
+            </validation-messages>
+            <label *ngIf="labelPlacement === 'above'">
+                {{ label }}
+                <span *ngIf="required">*</span>
+            </label>
+            <div></div>
+            <div (click)="updateState();markAsTouched();" class="input-group check-container" tabindex="0" #element
+                 [class.label-above]="labelPlacement === 'above'">
+                <span class="form-control" *ngIf="labelPlacement === 'before'">
+                    <label>
+                        {{ label }}
+                        <span *ngIf="required">*</span>
+                    </label>
+                </span>
+                <div class="input-group-addon ng-control"
+                     [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}">
+                    <input readonly #checkbox type="checkbox"
+                           [id]="identifier"
+                           [disabled]="disabled"
+                           [attr.checked]="checked || null"
+                           tabindex="-1"/>
+                </div>
+                <span class="form-control" *ngIf="labelPlacement === 'after'">
+                    <label>
+                        {{ label }}
+                        <span *ngIf="required">*</span>
+                    </label>
+                </span>
+            </div>
+        </div>
+    `,
+    styleUrls    : ['./assets/check-box.scss'],
+    providers    : [
+        {
+            provide    : NG_VALUE_ACCESSOR,
+            useExisting: CheckBoxComponent,
+            multi      : true
+        }
+    ],
+    encapsulation: ViewEncapsulation.None
+})
+export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnDestroy {
+
+    @OnChange checked: boolean = false;
+    @OnChange @Input() state   = 'off';
+
+    @Input() name: string                = '';
+    @Input() label: string               = '';
+    @Input() labelPlacement: string      = 'above';
+    @Input() checkedValue: any           = true;
+    @Input() disabled: boolean           = false;
+    @OnChange @Input() required: boolean = false;
+
+    requiredChange          = new EventEmitter<boolean>();
+    @Output() checkedChange = new EventEmitter<boolean>();
+    @Output() stateChange   = new EventEmitter<string>();
+
+    identifier = `check-box-${identifier++}`;
+
+    @ViewChild("checkbox") checkbox;
+    @ViewChild("element") element;
+
+    @Input() threeState = false;
+
+    @Output() onInit = new EventEmitter<any>();
+
+    requiredValidator = new RequiredCheckBoxValidator();
+
+    constructor(@Inject(Injector) public injector: Injector,
+                @Optional() @Inject(NG_VALIDATORS)  validators: Array<any>,
+                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
+        super(injector, validators, asyncValidators);
+        this.additionalValidators = [this.requiredValidator];
+    }
+
+    ngOnInit() {
+        super.ngOnInit();
+        this.onInit.emit();
+        this.watchSpaceBar();
+        this.requiredValidator.required = this.required;
+        this.requiredChange.merge(this.stateChange).takeUntil(this.onDestroy$).subscribe(() => {
+            this.updateCheckedStatus();
+        });
+        this.requiredChange.takeUntil(this.onDestroy$).subscribe(value => {
+            this.requiredValidator.required = value;
+        });
+
+        this.checked = this.state === 'on';
+        this.value   = this.checked ? this.checkedValue : false;
+        this.model.control.setValue(this.value);
+    }
+
+    watchSpaceBar() {
+        Observable.fromEvent(this.element.nativeElement, 'keydown')
+            .takeUntil(this.onDestroy$)
+            .subscribe((event: KeyboardEvent) => {
+                if (event.key === ' ') {
+                    this.updateState();
+                    this.markAsTouched();
+                }
+            });
+    }
+
+    updateCheckedStatus() {
+        this.requiredValidator.required = this.required;
+        this.checked                    = this.state === 'on';
+        this.value                      = this.checked ? this.checkedValue : false;
+        if (this.checkbox && this.checkbox.nativeElement) {
+            this.checkbox.nativeElement.indeterminate = this.state === 'indeterminate';
+        }
+        this.model.control.setValue(this.value);
+    }
+
+    markAsTouched() {
+        this.model.control.markAsTouched();
+    }
+
+    updateState() {
+        if (!this.disabled && !this.setIndeterminateIfNecessary()) {
+            this.toggle();
+        }
+    }
+
+    setIndeterminateIfNecessary() {
+        if (this.threeState && this.state === 'on') {
+            this.state = 'indeterminate'
+            return true;
+        }
+        return false;
+    }
+
+    toggle() {
+        this.state = this.state === 'off' ? 'on' : 'off';
+    }
+}
+
+let identifier = 0;

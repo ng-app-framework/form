@@ -1,6 +1,6 @@
 import {TestBed} from "@angular/core/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {CheckBoxComponent} from "../../src/app/Component/CheckBoxComponent";
+import {CheckBoxComponent} from "../../src/lib/Component/FormControl/CheckBoxComponent";
 import {CommonModule} from "@angular/common";
 
 describe('Module: Form', () => {

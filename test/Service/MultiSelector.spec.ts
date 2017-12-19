@@ -1,4 +1,4 @@
-import {MultiSelector} from "../../src/app/Service/Impl/MultiSelector";
+import {MultiSelector} from "../../src/lib/Service/Impl/MultiSelector";
 import {UnsubscribeAll} from "@ng-app-framework/core";
 
 describe('Module: Form', () => {

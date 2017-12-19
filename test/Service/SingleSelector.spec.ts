@@ -1,4 +1,4 @@
-import {SingleSelector} from "../../src/app/Service/Impl/SingleSelector";
+import {SingleSelector} from "../../src/lib/Service/Impl/SingleSelector";
 
 describe('Module: Form', () => {
     describe('Class: SingleSelector', () => {

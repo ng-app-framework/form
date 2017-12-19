@@ -1,4 +1,4 @@
-import {Searcher} from "../../src/app/Service/Impl/Searcher";
+import {Searcher} from "../../src/lib/Service/Impl/Searcher";
 
 describe('Module: Form', () => {
     describe('Class: Searcher', () => {

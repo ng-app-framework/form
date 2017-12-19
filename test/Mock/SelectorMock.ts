@@ -1,4 +1,4 @@
-import {SelectorInterface} from "../../src/app/Service/Interface/SelectorInterface";
+import {SelectorInterface} from "../../src/lib/Service/Interface/SelectorInterface";
 
 export class SelectorMock implements SelectorInterface {
 

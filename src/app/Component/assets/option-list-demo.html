@@ -1,0 +1,44 @@
+<div class="well">
+    <form #testForm="ngForm" novalidate>
+        <check-box [(ngModel)]="model.required" name="required" label="Is Required">
+        </check-box>
+        <check-box [(ngModel)]="model.isMultiple" name="isMultiple" label="Is Multiple">
+        </check-box>
+        <option-list
+                [options]="model.options"
+                [selectBy]="'id'"
+                name="testOptionList"
+                label="Test Option List"
+                [required]="model.required"
+                [(ngModel)]="model.selected"
+                [isMultiple]="model.isMultiple"
+                [placeholder]="'Select One...'">
+            <ng-template let-item>
+                {{item.id}} - {{ item.text }}
+            </ng-template>
+        </option-list>
+        <button class="btn btn-primary" type="submit" [disabled]="!testForm.form.valid">
+            Submit
+        </button>
+    </form>
+</div>
+<ul class="nav nav-tabs nav-justified">
+    <li class="nav-item active">
+        <a class="nav-link" data-toggle="tab" href="#select-markup" role="tab">
+            HTML
+        </a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#select-data" role="tab">
+            Data
+        </a>
+    </li>
+</ul>
+<div class="tab-content card">
+    <div class="tab-pane active" id="select-markup" role="tabpanel">
+        <pre>{{ markup }}</pre>
+    </div>
+    <div class="tab-pane" id="select-data" role="tabpanel">
+        <pre>{{ model | json }}</pre>
+    </div>
+</div>

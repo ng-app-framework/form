@@ -1,4 +1,4 @@
-import {NestedSearcher} from "../../src/app/Service/Impl/NestedSearcher";
+import {NestedSearcher} from "../../src/lib/Service/Impl/NestedSearcher";
 import {Observable} from "rxjs/Rx";
 
 class NestedSearcherShunt extends NestedSearcher {
