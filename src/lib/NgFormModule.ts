@@ -14,7 +14,6 @@ import {RadioComponent} from "./Component/FormControl/RadioComponent";
 import {RadioGroupComponent} from "./Component/FormControl/RadioGroupComponent";
 import {ValidationMessagesComponent} from "./Validation/Component/ValidationMessagesComponent";
 import {RequiredCheckBoxValidator} from "./Validation/Directive/RequiredCheckBoxValidator";
-import {OptionalEmailValidator} from './Validation/Directive/OptionalEmailValidator';
 import {SubmitButtonComponent} from './Component/SubmitButtonComponent';
 import {TextBoxComponent} from './Component/FormControl/TextBoxComponent';
 import {MatchValueValidator} from './Validation/Directive/MatchValueValidator';
@@ -30,7 +29,6 @@ import {ValidatorMessenger} from "./Validation/Service/ValdiatorMessenger";
         EmailComponent,
         ValidationMessagesComponent,
         RequiredCheckBoxValidator,
-        OptionalEmailValidator,
         SubmitButtonComponent,
         TextBoxComponent,
         MatchValueValidator,
@@ -63,7 +61,6 @@ import {ValidatorMessenger} from "./Validation/Service/ValdiatorMessenger";
     ],
     providers   : [
         RequiredCheckBoxValidator,
-        OptionalEmailValidator,
         ValidatorMessenger
     ]
 })
