@@ -27,12 +27,14 @@ export class NestedListDemoComponent {
     };
 
     markup = `
+<div class="card card-body bg-light">
     <nested-list
-        [element]="model.nestedListNode">
+         [element]="model.nestedListNode">
         <ng-template let-item>
             {{item.name}}
         </ng-template>
     </nested-list>
+</div>
     `;
 
 

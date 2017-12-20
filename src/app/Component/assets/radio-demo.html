@@ -3,9 +3,14 @@
                name="required"
                label="Is Required"
                labelPlacement="after"></check-box>
+    <check-box [(ngModel)]="model.horizontal"
+               name="horizontal"
+               label="Is Horizontal"
+               labelPlacement="after"></check-box>
     <div class="card card-body bg-light">
         <radio-group [name]="model.name"
                      label="Test Radio Group"
+                     [direction]="model.horizontal ? 'horizontal' : 'vertical'"
                      [options]="model.options"
                      [required]="model.required"
                      [(ngModel)]="model.value">
@@ -28,9 +33,9 @@
 </ul>
 <div class="tab-content card">
     <div class="tab-pane active" id="radio-markup" role="tabpanel">
-        <pre>{{ markup }}</pre>
+        <pre class="card card-body bg-light">{{ markup }}</pre>
     </div>
     <div class="tab-pane" id="radio-data" role="tabpanel">
-        <pre>{{ model | json }}</pre>
+        <pre class="card card-body bg-light">{{ model | json }}</pre>
     </div>
 </div>

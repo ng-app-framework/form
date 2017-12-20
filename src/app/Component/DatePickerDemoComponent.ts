@@ -16,7 +16,7 @@ export class DatePickerDemoComponent {
     markup = `
 <form #testForm="ngForm">
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
-    <div class="well">
+    <div class="card card-body bg-light">
         <date-picker
              name="testDatepicker"
              label="Test Date Picker"

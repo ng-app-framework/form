@@ -21,7 +21,7 @@ export class DropDownDemoComponent {
 <form #testForm="ngForm" novalidate>
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
     <check-box [(ngModel)]="model.isMultiple" name="isMultiple" label="Is Multiple" labelPlacement="after"></check-box>
-    <div class="well">
+    <div class="card card-body bg-light">
         <drop-down
                 [options]="model.options"
                 [selectBy]="'id'"

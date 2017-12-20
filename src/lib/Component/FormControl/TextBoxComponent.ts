@@ -17,6 +17,7 @@ import {NgFormControl} from "../NgFormControl";
                 {{label}}
                 <ng-container *ngIf="required">*</ng-container>
             </label>
+            <div></div>
             <ng-container *ngIf="!isIconProvided()">
                 <input class="form-control ng-control" type="text"
                        [placeholder]="placeholder || ''"
@@ -29,19 +30,20 @@ import {NgFormControl} from "../NgFormControl";
                 />
             </ng-container>
             <div class="input-group" *ngIf="isIconProvided()">
-                <span class="input-group-addon" *ngIf="isIconPlacementBefore()">
+                <span class="input-group-addon ng-control" *ngIf="isIconPlacementBefore()"
+                      [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
                     <span class="fa fa-{{icon}}"></span>
                 </span>
-                <input class="form-control ng-control" type="text"
+                <input class="form-control" type="text"
                        [placeholder]="placeholder || ''"
                        [id]="identifier"
                        [name]="name"
                        [disabled]="disabled"
-                       [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}"
                        [(ngModel)]="value"
                        (blur)="control.markAsTouched()"
                 />
-                <span class="input-group-addon" *ngIf="!isIconPlacementBefore()">
+                <span class="input-group-addon ng-control" *ngIf="!isIconPlacementBefore()"
+                      [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
                     <span class="fa fa-{{icon}}"></span>
                 </span>
             </div>

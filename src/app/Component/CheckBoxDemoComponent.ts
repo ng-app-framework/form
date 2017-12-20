@@ -28,7 +28,7 @@ export class CheckBoxDemoComponent {
                name="threeState"
                label="Is Three State"
                labelPlacement="after"></check-box>
-    <div class="well">
+    <div class="card card-body bg-light">
         <check-box
                 [name]="model.name"
                 [required]="model.required"

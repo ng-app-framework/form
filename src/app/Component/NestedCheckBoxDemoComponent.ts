@@ -39,7 +39,7 @@ export class NestedCheckBoxDemoComponent {
                name="required"
                label="Is Required"
                labelPlacement="after"></check-box>
-    <div class="well">
+    <div class="card card-body bg-light">
         <nested-check-box
                 [options]="model.options"
                 [(ngModel)]="model.selected"

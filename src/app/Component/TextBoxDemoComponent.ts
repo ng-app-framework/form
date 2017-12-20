@@ -20,10 +20,12 @@ export class TextBoxDemoComponent {
     markup = `
 <form #testForm="ngForm">
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
-    <check-box name="shouldMatch" label="Should Match Matching Field" [(ngModel)]="model.shouldMatch" labelPlacement="after"></check-box>
     <text-box name="icon" label="Icon" [(ngModel)]="model.icon"></text-box>
+    <check-box name="shouldMatch" label="Should Match Matching Field" [(ngModel)]="model.shouldMatch"
+               labelPlacement="after"></check-box>
     <text-box name="match" label="Matching Field" [(ngModel)]="model.match"></text-box>
-    <div class="well">
+    <div class="clearfix"></div>
+    <div class="card card-body bg-light">
         <text-box
                 [name]="model.name"
                 label="Test Text Field"

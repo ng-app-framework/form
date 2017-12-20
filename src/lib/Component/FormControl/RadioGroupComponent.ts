@@ -20,7 +20,7 @@ import {NgFormControl} from "../NgFormControl";
                 <span *ngIf="required">*</span>
             </label>
             <div></div>
-            <div class="radio-controls">
+            <div class="radio-controls" [class.d-flex]="direction === 'horizontal'">
                 <ng-container *ngFor="let option of options">
                     <radio [name]="name" [label]="option[bindLabel]" [(ngModel)]="value" [invalid]="invalid"
                            [checkedValue]="option[bindValue]" [parentFormControl]="control"

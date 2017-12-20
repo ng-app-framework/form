@@ -1,7 +1,6 @@
 <form #testForm="ngForm">
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
     <text-box name="icon" label="Icon" [(ngModel)]="model.icon"></text-box>
-
     <check-box name="shouldMatch" label="Should Match Matching Field" [(ngModel)]="model.shouldMatch"
                labelPlacement="after"></check-box>
     <text-box name="match" label="Matching Field" [(ngModel)]="model.match"></text-box>
@@ -33,9 +32,9 @@
 </ul>
 <div class="tab-content card">
     <div class="tab-pane active" id="email-markup" role="tabpanel">
-        <pre>{{ markup }}</pre>
+        <pre class="card card-body bg-light">{{ markup }}</pre>
     </div>
     <div class="tab-pane" id="email-data" role="tabpanel">
-        <pre>{{ model | json }}</pre>
+        <pre class="card card-body bg-light">{{ model | json }}</pre>
     </div>
 </div>

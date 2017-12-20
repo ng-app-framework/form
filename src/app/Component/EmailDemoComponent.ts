@@ -20,7 +20,7 @@ export class EmailDemoComponent {
     markup = `
 <form #testForm="ngForm">
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
-    <div class="well">
+    <div class="card card-body bg-light">
         <email
                 [name]="model.name"
                 label="Email Address"

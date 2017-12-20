@@ -11,6 +11,7 @@ export class RadioDemoComponent {
     model = {
         name    : 'testRadio',
         required: false,
+        horizontal: false,
         value   : '',
         options : [
             {
@@ -34,7 +35,7 @@ export class RadioDemoComponent {
                name="required"
                label="Is Required"
                labelPlacement="after"></check-box>
-    <div class="well">
+    <div class="card card-body bg-light">
         <radio-group [name]="model.name"
                      label="Test Radio Group"
                      [options]="model.options"

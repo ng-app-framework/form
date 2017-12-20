@@ -21,21 +21,20 @@ import {NgFormControl} from "../NgFormControl";
             <div></div>
             <div (click)="check();" class="input-group check-container" tabindex="0" #element
                  [class.label-above]="labelPlacement === 'above'">
-                <span class="form-control ng-control" *ngIf="labelPlacement === 'before'"
-                      [ngClass]="getNgClassesForElement('label', 'before')">
+                <span class="form-control" *ngIf="labelPlacement === 'before'">
                     <label>
                         {{ label }}
                     </label>
                 </span>
-                <div class="input-group-addon ng-control" [ngClass]="getNgClassesForElement('addon')">
+                <div class="input-group-addon ng-control"
+                     [ngClass]="{'ng-invalid': (invalid) && control.touched, 'ng-touched':control.touched, 'ng-valid':!(invalid) && control.touched}">
                     <input readonly type="radio"
                            [id]="identifier"
                            [disabled]="disabled"
                            [checked]="value === checkedValue"
                            tabindex="-1"/>
                 </div>
-                <span class="form-control ng-control" *ngIf="labelPlacement === 'after'"
-                      [ngClass]="getNgClassesForElement('label', 'after')">
+                <span class="form-control" *ngIf="labelPlacement === 'after'">
                     <label>
                         {{ label }}
                     </label>
@@ -93,27 +92,6 @@ export class RadioComponent extends NgFormControl<any> implements OnInit, OnDest
             this.model.control.markAsTouched();
             this.onTouch.emit();
         }
-    }
-
-    getNgClassesForElement(element, position = null) {
-        if (element === 'addon') {
-            if (this.labelPlacement === 'above') {
-                return {
-                    'ng-invalid': (this.invalid) && this.control.touched,
-                    'ng-touched': this.control.touched,
-                    'ng-valid'  : !(this.invalid) && this.control.touched
-                };
-            }
-            return {};
-        }
-        if (this.labelPlacement === position) {
-            return {
-                'ng-invalid': (this.invalid) && this.control.touched,
-                'ng-touched': this.control.touched,
-                'ng-valid'  : !(this.invalid) && this.control.touched
-            };
-        }
-        return {};
     }
 
 }

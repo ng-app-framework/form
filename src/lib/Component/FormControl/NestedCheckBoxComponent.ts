@@ -17,6 +17,7 @@ import {NgFormControl} from "../NgFormControl";
             <label>
                 {{label}}
             </label>
+            <div></div>
             <ng-container *ngIf="areOptionsInitialized">
                 <text-box name="nested-check-box-search" class="full-width"
                           [(ngModel)]="searcher.search"
