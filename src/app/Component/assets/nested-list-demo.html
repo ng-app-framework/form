@@ -1,14 +1,14 @@
-<div class="well">
+<div class="card card-body bg-light">
     <nested-list
          [element]="model.nestedListNode">
         <ng-template let-item>
-            <div class="nested-list-element">{{item.name}}</div>
+            {{item.name}}
         </ng-template>
     </nested-list>
 </div>
-<ul class="nav nav-tabs nav-justified">
-    <li class="nav-item active">
-        <a class="nav-link" data-toggle="tab" href="#nested-list-markup" role="tab">
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#nested-list-markup" role="tab">
             HTML
         </a>
     </li>

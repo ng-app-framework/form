@@ -1,12 +1,11 @@
-<div class="well">
-    <form #testForm="ngForm" novalidate>
-        <check-box [(ngModel)]="model.required" name="required" label="Is Required">
-        </check-box>
-        <check-box [(ngModel)]="model.isMultiple" name="isMultiple" label="Is Multiple">
-        </check-box>
-        <option-list
+<form #testForm="ngForm" novalidate>
+    <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
+    <check-box [(ngModel)]="model.isMultiple" name="isMultiple" label="Is Multiple" labelPlacement="after"></check-box>
+    <div class="card card-body bg-light">
+        <drop-down
                 [options]="model.options"
                 [selectBy]="'id'"
+                class="full-width"
                 name="testOptionList"
                 label="Test Option List"
                 [required]="model.required"
@@ -16,15 +15,13 @@
             <ng-template let-item>
                 {{item.id}} - {{ item.text }}
             </ng-template>
-        </option-list>
-        <button class="btn btn-primary" type="submit" [disabled]="!testForm.form.valid">
-            Submit
-        </button>
-    </form>
-</div>
-<ul class="nav nav-tabs nav-justified">
-    <li class="nav-item active">
-        <a class="nav-link" data-toggle="tab" href="#select-markup" role="tab">
+        </drop-down>
+    </div>
+    <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
+</form>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#select-markup" role="tab">
             HTML
         </a>
     </li>

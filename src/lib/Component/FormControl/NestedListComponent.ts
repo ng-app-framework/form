@@ -7,18 +7,21 @@ import {Observable} from "rxjs/Rx";
 
 @Component({
     selector     : 'nested-list',
-    template     : `
-        <div class="parent-node" [class.has-children]="!isCollapsed() && hasChildren()"
+    template     : `        
+        <div class="parent-node" [class.has-children]="!isCollapsed() && hasChildren()" [class.show-lines]="showLines"
+             (click)="!collapseButton ? toggle() : null"
              [hidden]="!(shouldDisplay$(element) | async)">
             <ng-container *ngTemplateOutlet="template;context:{$implicit: element}"></ng-container>
-            <span *ngIf="hasChildren()" class="fa" [class.fa-plus]="isCollapsed()" [class.fa-minus]="!isCollapsed()"
+            <span *ngIf="hasChildren() && collapseButton" class="fa" [class.fa-plus]="isCollapsed()" [class.fa-minus]="!isCollapsed()"
                   (click)="toggle()"></span>
             <div class="parent-node-end"></div>
         </div>
         <div class="children-list" *ngIf="hasChildren()" [hidden]="!(shouldDisplay$(element) | async) || isCollapsed()">
             <ng-container *ngFor="let child of element.children">
                 <nested-list [element]="child" [template]="template" [initialCollapse]="initialCollapse"
-                     [onCollapseAll]="onCollapseAll" [onExpandAll]="onExpandAll" [shouldDisplay$]="shouldDisplay$">
+                             [showLines]="showLines" [collapseButton]="collapseButton"
+                             [onCollapseAll]="onCollapseAll" [onExpandAll]="onExpandAll"
+                             [shouldDisplay$]="shouldDisplay$">
 
                 </nested-list>
             </ng-container>
@@ -38,6 +41,9 @@ export class NestedListComponent implements OnInit, OnDestroy {
 
     @Input() onCollapseAll = new EventEmitter<any>();
     @Input() onExpandAll   = new EventEmitter<any>();
+
+    @Input() collapseButton = true;
+    @Input() showLines      = true;
 
 
     @Input() shouldDisplay$ = (element) => Observable.from([true]);

@@ -1,56 +1,93 @@
-check-box, nested-list, nested-option-list, date-picker, email {
+check-box, nested-list, nested-check-box, date-picker, email {
     display: block;
     position: relative;
 }
 
-.form-control.no-select {
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-}
-
-.input-group {
-    .input-group-addon {
-        width: inherit;
-        &:first-child {
-            border-top-left-radius: 0.25em;
-            border-bottom-left-radius: 0.25em;
-            border-left: 1px solid #ccc;
+.form-group {
+    .form-control.no-select {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+    .alert-danger ul {
+        margin-bottom:0;
+    }
+    .form-control {
+        width: auto;
+    }
+    .input-group {
+        width: auto;
+        white-space: nowrap;
+        .form-control {
+            flex-grow: 0;
         }
-        &:last-child {
-            border-top-right-radius: 0.25em;
-            border-bottom-right-radius: 0.25em;
-            border-right: 1px solid #ccc;
+        .input-group-addon {
+            &:first-child {
+                border-top-left-radius: 0.25em;
+                border-bottom-left-radius: 0.25em;
+                border-left: 1px solid #ccc;
+            }
+            &:last-child {
+                border-top-right-radius: 0.25em;
+                border-bottom-right-radius: 0.25em;
+                border-right: 1px solid #ccc;
+            }
+        }
+        .input-group-btn {
+            width: inherit;
+        }
+        &.full-width {
+            .input-group-addon, .input-group-btn {
+                width: 100%;
+            }
+            .form-control {
+                flex-grow: 1;
+            }
         }
     }
-    &.full-width {
-        .input-group-addon, .input-group-btn {
+    .form-control label {
+        margin-bottom: 0;
+        line-height: 24px;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+}
+
+.full-width {
+    .form-group {
+        .input-group,
+        .form-control,
+        .input-group span.form-control {
             width: 100%;
         }
     }
 }
 
-.ng-control, .ng-select > .ng-control {
-    border: 1px solid #ccc;
-    border-left: 5px solid #ccc;
-    &.ng-valid:not(form).ng-touched {
-        border-left: 5px solid #42A948; /* green */
+.validate {
+    .ng-control, .ng-select > .ng-control {
+        border: 1px solid #ccc;
+        border-left: 5px solid #ccc;
+        &.ng-valid:not(form).ng-touched {
+            border-left: 5px solid #42A948; /* green */
+        }
+
+        &.ng-invalid:not(form).ng-touched {
+            border-left: 5px solid #a94442; /* red */
+        }
     }
 
-    &.ng-invalid:not(form).ng-touched {
-        border-left: 5px solid #a94442; /* red */
+    .ng-valid:not(form).ng-touched {
+        .ng-control, .ng-select.focused:not(.opened) > .ng-control {
+            border-left: 5px solid #42A948; /* green */
+        }
     }
-}
 
-.ng-valid:not(form).ng-touched {
-    .ng-control, .ng-select.focused:not(.opened) > .ng-control {
-        border-left: 5px solid #42A948; /* green */
-    }
-}
-
-.ng-invalid:not(form).ng-touched {
-    .ng-control, .ng-select.focused:not(.opened) > .ng-control {
-        border-left: 5px solid #a94442; /* red */
+    .ng-invalid:not(form).ng-touched {
+        .ng-control, .ng-select.focused:not(.opened) > .ng-control {
+            border-left: 5px solid #a94442; /* red */
+        }
     }
 }

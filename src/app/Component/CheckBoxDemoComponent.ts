@@ -9,43 +9,39 @@ import * as stringify from 'json-stringify-safe';
 export class CheckBoxDemoComponent {
 
     model = {
-        name   : 'testCheckBox',
+        name        : 'testCheckBox',
         isThreeState: false,
-        required: false,
-        state  : 'off',
-        checked: false,
-        ngModel: null,
-        value: 'CHECK BOX IS CHECKED!'
+        required    : false,
+        state       : 'off',
+        checked     : false,
+        ngModel     : null,
+        value       : 'CHECK BOX IS CHECKED!'
     };
 
     markup = `
 <form #testForm="ngForm" novalidate>
-    <check-box [(ngModel)]="model.required" name="required" label="Is Required">
-    </check-box>
-    <check-box [(ngModel)]="model.isThreeState" name="threeState" label="Is Three State">
-    </check-box>
-    <check-box
-               [name]="model.name"
-               [required]="model.required"
-               [threeState]="model.isThreeState"
-               [checkedValue]="model.value"
-               [(ngModel)]="model.ngModel"
-               [(state)]="model.state"
-               label="Check Box">
-    </check-box>
-    <button class="btn btn-primary" type="submit" [disabled]="!testForm.form.valid">
-        Submit
-    </button>
+    <check-box [(ngModel)]="model.required"
+               name="required"
+               label="Is Required"
+               labelPlacement="after"></check-box>
+    <check-box [(ngModel)]="model.isThreeState"
+               name="threeState"
+               label="Is Three State"
+               labelPlacement="after"></check-box>
+    <div class="well">
+        <check-box
+                [name]="model.name"
+                [required]="model.required"
+                [threeState]="model.isThreeState"
+                [checkedValue]="model.value"
+                [(ngModel)]="model.ngModel"
+                [(state)]="model.state"
+                label="Test Check Box">
+        </check-box>
+    </div>
+    <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
 </form>
     `;
-
-    constructor() {
-
-    }
-
-
-    getNonCircularObject(obj) {
-        return JSON.parse(stringify(obj));
-    }
-
 }
+
+

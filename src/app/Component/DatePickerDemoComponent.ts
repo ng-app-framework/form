@@ -14,14 +14,19 @@ export class DatePickerDemoComponent {
     };
 
     markup = `
-<div class="date-picker"
-    [id]="id"
-    [name]="name"
-    [theme]="'some-class-name'"
-    [disabled]="false"
-    [(value)]="models.datePicker.value"
-    [minDate]="models.datePicker.minDate"
-    [maxDate]="models.datePicker.maxDate"></div>
+<form #testForm="ngForm">
+    <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
+    <div class="well">
+        <date-picker
+             name="testDatepicker"
+             label="Test Date Picker"
+             [(ngModel)]="model.value"
+             [required]="model.required"
+             [minDate]="model.minDate"
+             [maxDate]="model.maxDate"></date-picker>
+    </div>
+    <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
+</form>
     `;
 
     constructor() {

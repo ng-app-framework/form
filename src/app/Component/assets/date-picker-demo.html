@@ -1,23 +1,23 @@
-<div class="alert alert-info">
-    Please include the following css file for the date picker styles.
-    <pre>/node_modules/ngx-bootstrap/datepicker/bs-datepicker.css</pre>
-</div>
-<div class="well">
-    <form #testForm="ngForm">
-        <check-box [(ngModel)]="model.required" name="required" label="Is Required"></check-box>
-        <div class="date-picker"
+<form #testForm="ngForm">
+    <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
+    <div class="card card-body bg-light">
+        <date-picker
              name="testDatepicker"
              label="Test Date Picker"
              [(ngModel)]="model.value"
              [required]="model.required"
              [minDate]="model.minDate"
-             [maxDate]="model.maxDate"></div>
-        <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
-    </form>
+             [maxDate]="model.maxDate"></date-picker>
+    </div>
+    <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
+</form>
+<div class="alert alert-info">
+    Please include the following css file for the date picker styles.
+    <pre>/node_modules/ngx-bootstrap/datepicker/bs-datepicker.css</pre>
 </div>
-<ul class="nav nav-tabs nav-justified">
-    <li class="nav-item active">
-        <a class="nav-link" data-toggle="tab" href="#date-picker-markup" role="tab">
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#date-picker-markup" role="tab">
             HTML
         </a>
     </li>

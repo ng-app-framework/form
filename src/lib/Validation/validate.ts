@@ -10,8 +10,8 @@ import {
 import {Observable} from 'rxjs/Rx';
 
 
-export type ValidationResult = { [validator: string]: string | boolean };
-
+export type ValidatorResults = { [validator: string]:  {[key:string] : any} | string | boolean };
+export type ValidatorResult = {[key:string] : any} | string | boolean;
 
 export type AsyncValidatorArray = Array<Validator | AsyncValidatorFn>;
 
@@ -45,7 +45,7 @@ export const validate =
                          const synchronousValid = () => composeValidators(validators)(control);
 
 
-                         if (asyncValidators) {
+                         if (asyncValidators && asyncValidators.length > 0) {
                              const asyncValidator = composeValidators(asyncValidators);
 
 

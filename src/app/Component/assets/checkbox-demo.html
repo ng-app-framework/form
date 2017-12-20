@@ -1,39 +1,43 @@
-<div class="well">
-    <form #testForm="ngForm" novalidate>
-        <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after">
-        </check-box>
-        <check-box [(ngModel)]="model.isThreeState" name="threeState" label="Is Three State" labelPlacement="after">
-        </check-box>
+<form #testForm="ngForm" novalidate>
+    <check-box [(ngModel)]="model.required"
+               name="required"
+               label="Is Required"
+               labelPlacement="after"></check-box>
+    <check-box [(ngModel)]="model.isThreeState"
+               name="threeState"
+               label="Is Three State"
+               labelPlacement="after"></check-box>
+    <div class="card card-body bg-light">
         <check-box
-                   [name]="model.name"
-                   [required]="model.required"
-                   [threeState]="model.isThreeState"
-                   [checkedValue]="model.value"
-                   [(ngModel)]="model.ngModel"
-                   [(state)]="model.state"
-                   label="Test Check Box">
+                [name]="model.name"
+                [required]="model.required"
+                [threeState]="model.isThreeState"
+                [checkedValue]="model.value"
+                [(ngModel)]="model.ngModel"
+                [(state)]="model.state"
+                label="Test Check Box">
         </check-box>
-        <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
-    </form>
-</div>
-<ul class="nav nav-tabs nav-justified">
+    </div>
+    <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
+</form>
+<ul class="nav nav-tabs">
     <li class="nav-item">
-        <a class="nav-link" data-toggle="tab" href="#checkbox-markup" role="tab">
+        <a class="nav-link active" data-toggle="tab" href="#checkbox-markup" role="tab">
             HTML
         </a>
     </li>
 
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#checkbox-data" role="tab">
             Data
         </a>
     </li>
 </ul>
 <div class="tab-content card">
-    <div class="tab-pane" id="checkbox-markup" role="tabpanel">
+    <div class="tab-pane active" id="checkbox-markup" role="tabpanel">
         <pre>{{ markup }}</pre>
     </div>
-    <div class="tab-pane active" id="checkbox-data" role="tabpanel">
+    <div class="tab-pane" id="checkbox-data" role="tabpanel">
         <pre>{{ model | json }}</pre>
     </div>
 </div>

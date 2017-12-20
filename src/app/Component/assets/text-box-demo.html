@@ -1,17 +1,20 @@
 <form #testForm="ngForm">
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
+    <text-box name="icon" label="Icon" [(ngModel)]="model.icon"></text-box>
+
+    <check-box name="shouldMatch" label="Should Match Matching Field" [(ngModel)]="model.shouldMatch"
+               labelPlacement="after"></check-box>
+    <text-box name="match" label="Matching Field" [(ngModel)]="model.match"></text-box>
+    <div class="clearfix"></div>
     <div class="card card-body bg-light">
-        <email
+        <text-box
                 [name]="model.name"
-                label="Email Address"
+                label="Test Text Field"
                 [(ngModel)]="model.value"
+                [matchValue]="model.shouldMatch ? {value:model.match,label:'Matching Field'} : null"
+                [icon]="model.icon"
                 [required]="model.required"
-                [placeholder]="model.placeholder"></email>
-        <email name="confirmEmail" label="Confirm Email Address"
-               [(ngModel)]="model.match"
-               [matchValue]="{value:model.value,label:'Email Address'}"
-               [required]="true"
-               placeholder="Confirm Email"></email>
+                [placeholder]="model.placeholder"></text-box>
     </div>
     <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
 </form>
@@ -21,6 +24,7 @@
             HTML
         </a>
     </li>
+
     <li class="nav-item">
         <a class="nav-link" data-toggle="tab" href="#email-data" role="tab">
             Data

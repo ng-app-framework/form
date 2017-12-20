@@ -11,32 +11,15 @@ nested-list {
     nested-list {
         padding-left: $padding-left;
     }
-    .parent-node-end, .list-end {
-        width: 3px;
-        height: 3px;
-        border: 1px solid #888;
-        background-color: #888;
-    }
+
     .children-list {
-        border-left: 1px solid #dadada;
         position: relative;
-        .list-end {
-            position: absolute;
-            bottom: -2px;
-            left: -2px;
-        }
     }
     .parent-node {
         position: relative;
         max-width: 100%;
-        .parent-node-end {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: -1px;
-            margin: auto;
-
-        }
+        padding: 4px 8px;
+        cursor: pointer;
         > .fa-plus, > .fa-minus {
             cursor: pointer;
             -webkit-user-select: none;
@@ -57,6 +40,39 @@ nested-list {
             border: 1px solid transparent;
             padding: 1px 2px;
         }
+    }
+    .show-lines {
+        .parent-node-end, .list-end {
+            width: 3px;
+            height: 3px;
+            border: 1px solid #888;
+            background-color: #888;
+        }
+        & + .children-list {
+            border-left: 1px solid #dadada;
+            .list-end {
+                position: absolute;
+                bottom: -2px;
+                left: -2px;
+            }
+        }
+        &.has-children {
+            &::before {
+                width: 0;
+                height: 50%;
+                content: " ";
+                position: absolute;
+                -webkit-transform: translateY(100%);
+                -moz-transform: translateY(100%);
+                -ms-transform: translateY(100%);
+                -o-transform: translateY(100%);
+                transform: translateY(100%);
+                top: 0;
+                left: 0;
+                z-index: -1;
+                border-right: 1px solid #dadada;
+            }
+        }
         &::after {
             width: $padding-left;
             height: 0;
@@ -72,23 +88,13 @@ nested-list {
         &[hidden]::after, &[hidden] .parent-node-end {
             display: none;
         }
-    }
-
-    .parent-node.has-children {
-        &::before {
-            width: 0;
-            height: 50%;
-            content: " ";
+        .parent-node-end {
             position: absolute;
-            -webkit-transform: translateY(100%);
-            -moz-transform: translateY(100%);
-            -ms-transform: translateY(100%);
-            -o-transform: translateY(100%);
-            transform: translateY(100%);
             top: 0;
-            left: 0;
-            border-right: 1px solid #dadada;
-            z-index: -1;
+            bottom: 0;
+            left: -1px;
+            margin: auto;
+
         }
     }
 }

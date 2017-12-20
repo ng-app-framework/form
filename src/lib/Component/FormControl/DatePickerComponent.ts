@@ -7,7 +7,7 @@ import {NgFormControl} from "../NgFormControl";
 
 
 @Component({
-    selector     : '.date-picker',
+    selector     : 'date-picker',
     template     : `
         <div class="form-group">
             <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">

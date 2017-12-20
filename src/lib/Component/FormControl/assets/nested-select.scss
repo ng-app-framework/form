@@ -1,31 +1,40 @@
 @import "./field.scss";
 
-nested-option-list {
+nested-check-box {
+    nested-list.form-control.expandable {
+        padding: 5px 10px;
+        > .parent-node {
+            display: none;
+        }
+        .parent-node {
+            padding: 0;
+        }
+    }
     .expandable {
-        .form-group {
+        .form-control, .form-group {
             margin-bottom: 0;
         }
-        > nested-list {
-            > .parent-node {
-                display: none;
-            }
-        }
         check-box {
-            .form-control, .input-group-addon {
-                border: none;
-                background-color: inherit;
-                box-shadow:none;
-                &:first-child, &:last-child {
-                    border-left: none;
-                    border-right: none;
-                }
-                label {
-                    font-weight:normal;
+            .form-group {
+                .form-control, .input-group-addon {
+                    padding: 2px 4px;
+                    height: auto;
+                    border: none;
+                    background-color: inherit;
+                    box-shadow: none;
+                    &:first-child, &:last-child {
+                        border-left: none;
+                        border-right: none;
+                    }
+                    label {
+                        font-weight: normal;
+                        line-height: 28px;
+                    }
                 }
             }
         }
-        .bold check-box .form-control label {
-            font-weight:bold;
+        .bold .form-control label {
+            font-weight: bold;
         }
     }
     .bold {

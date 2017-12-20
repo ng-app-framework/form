@@ -6,19 +6,23 @@ import {DemoComponent} from "./Component/DemoComponent";
 import {CheckBoxDemoComponent} from "./Component/CheckBoxDemoComponent";
 import {EmailDemoComponent} from "./Component/EmailDemoComponent";
 import {DatePickerDemoComponent} from "./Component/DatePickerDemoComponent";
-import {OptionListDemoComponent} from "./Component/OptionListDemoComponent";
+import {DropDownDemoComponent} from "./Component/DropDownDemoComponent";
 import {NestedListDemoComponent} from "./Component/NestedListDemoComponent";
-import {NestedOptionListDemoComponent} from "./Component/NestedOptionListDemoComponent";
+import {NestedCheckBoxDemoComponent} from "./Component/NestedCheckBoxDemoComponent";
+import {RadioDemoComponent} from "./Component/RadioDemoComponent";
+import {TextBoxDemoComponent} from "./Component/TextBoxDemoComponent";
 
 @NgModule({
     declarations: [
         DemoComponent,
         CheckBoxDemoComponent,
         DatePickerDemoComponent,
-        OptionListDemoComponent,
+        DropDownDemoComponent,
         NestedListDemoComponent,
-        NestedOptionListDemoComponent,
-        EmailDemoComponent
+        NestedCheckBoxDemoComponent,
+        EmailDemoComponent,
+        TextBoxDemoComponent,
+        RadioDemoComponent
     ],
     imports     : [
         BrowserModule,

@@ -1,4 +1,4 @@
-import {Component, Input, ViewEncapsulation} from '@angular/core';
+import {Component, Input, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {Observable} from "rxjs/Rx";
 
@@ -23,18 +23,21 @@ export class SubmitButtonComponent {
 
     @Input() formGroup: FormGroup;
 
+    @Output() onSubmit = new EventEmitter<any>();
+
     protected identifier = `submit-${identifier++}`;
 
     submit() {
         this.validateAllFormFields(this.formGroup);
-        console.log('form is valid', this.formGroup.valid);
+        if (this.formGroup.valid) {
+            this.onSubmit.emit(this.formGroup.value);
+        }
     }
 
     validateAllFormFields(formGroup: FormGroup) {
         Object.keys(formGroup.controls).forEach(field => {  //{2}
             const control = formGroup.get(field);             //{3}
             if (control instanceof FormControl) {             //{4}
-                console.log(control);
                 control.markAsTouched();
             } else if (control instanceof FormGroup) {        //{5}
                 this.validateAllFormFields(control);            //{6}

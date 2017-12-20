@@ -35,8 +35,6 @@ export class NestedListDemoComponent {
     </nested-list>
     `;
 
-    constructor() {
-    }
 
 
 }

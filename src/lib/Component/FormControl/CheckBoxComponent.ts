@@ -14,7 +14,7 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
 @Component({
     selector     : 'check-box',
     template     : `
-        <div class="form-group">
+        <div class="form-group" [class.validate]="shouldValidate">
             <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
             </validation-messages>
             <label *ngIf="labelPlacement === 'above'">
@@ -94,21 +94,17 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
     ngOnInit() {
         super.ngOnInit();
         this.onInit.emit();
-        this.watchSpaceBar();
-        this.requiredValidator.required = this.required;
+        this.updateCheckedStatus();
+        this.watchChanges();
+    }
+
+    watchChanges() {
         this.requiredChange.merge(this.stateChange).takeUntil(this.onDestroy$).subscribe(() => {
             this.updateCheckedStatus();
         });
         this.requiredChange.takeUntil(this.onDestroy$).subscribe(value => {
             this.requiredValidator.required = value;
         });
-
-        this.checked = this.state === 'on';
-        this.value   = this.checked ? this.checkedValue : false;
-        this.model.control.setValue(this.value);
-    }
-
-    watchSpaceBar() {
         Observable.fromEvent(this.element.nativeElement, 'keydown')
             .takeUntil(this.onDestroy$)
             .subscribe((event: KeyboardEvent) => {
@@ -126,7 +122,6 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
         if (this.checkbox && this.checkbox.nativeElement) {
             this.checkbox.nativeElement.indeterminate = this.state === 'indeterminate';
         }
-        this.model.control.setValue(this.value);
     }
 
     markAsTouched() {
@@ -141,7 +136,7 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
 
     setIndeterminateIfNecessary() {
         if (this.threeState && this.state === 'on') {
-            this.state = 'indeterminate'
+            this.state = 'indeterminate';
             return true;
         }
         return false;

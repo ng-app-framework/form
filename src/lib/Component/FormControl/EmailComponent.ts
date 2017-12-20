@@ -1,35 +1,25 @@
 import {Component, Inject, Input, Optional, ViewChild, ViewEncapsulation, Injector} from '@angular/core';
-import {NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgModel} from "@angular/forms";
-import 'rxjs/Rx';
-import {OptionalEmailValidator} from "../../Validation/Directive/OptionalEmailValidator";
+import {FormControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgModel} from "@angular/forms";
+import {OnChange} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
+import {TextBoxComponent} from './TextBoxComponent';
 
 @Component({
     selector     : 'email',
     template     : `
-        <div class="form-group">
-            <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
-            </validation-messages>
-            <label [attr.for]="identifier">
-                {{label}}
-                <ng-container *ngIf="required">*</ng-container>
-            </label>
-            <div class="input-group">
-                <span class="input-group-addon">
-                    <span class="fa fa-envelope"></span>
-                </span>
-                <input class="form-control ng-control" type="email"
-                       #input
-                       [placeholder]="placeholder"
-                       [id]="identifier"
-                       [name]="name"
-                       [disabled]="disabled"
-                       [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
-                       [(ngModel)]="value"
-                       (blur)="model.control.markAsTouched()"
-                />
-            </div>
-        </div>
+        <text-box [placeholder]="placeholder"
+                  [class.validate]="shouldValidate"
+                  [name]="name"
+                  [label]="label"
+                  [invalid]="invalid"
+                  [failures]="failures"
+                  [email]="isValueProvided"
+                  icon="envelope"
+                  [disabled]="disabled"
+                  [(ngModel)]="value"
+                  [shouldValidate]="false"
+                  [parentFormControl]="control"
+        ></text-box>
     `,
     styleUrls    : ['./assets/field.scss'],
     providers    : [{
@@ -41,17 +31,18 @@ import {NgFormControl} from "../NgFormControl";
 })
 export class EmailComponent extends NgFormControl<string> {
 
-    @Input() name: string        = null;
-    @Input() required: boolean   = false;
-    @Input() disabled: boolean   = false;
-    @Input() label: string       = '';
-    @Input() placeholder: string = null;
+    @Input() name: string                 = null;
+    @OnChange @Input() required: boolean  = false;
+    @OnChange @Input() disabled: boolean  = false;
+    @Input() parentFormControl: FormControl;
+    @Input() label: string                = '';
+    @Input() placeholder: string          = null;
+    @Input() shouldValidate               = true;
+    @OnChange @Input() invalid: boolean   = false;
+    @OnChange @Input() failures: string[] = [];
 
-    @ViewChild('input') input;
 
-    protected additionalValidators = [new OptionalEmailValidator()];
-
-    protected identifier = `email-${identifier++}`;
+    @ViewChild('textBox') textBox: TextBoxComponent;
 
     constructor(public injector: Injector,
                 @Optional() @Inject(NG_VALIDATORS)  defaultValidators: Array<any>,
@@ -59,10 +50,5 @@ export class EmailComponent extends NgFormControl<string> {
         super(injector, defaultValidators, asyncValidators);
     }
 
-    ngOnInit() {
-        super.ngOnInit();
-    }
 
 }
-
-let identifier = 0;

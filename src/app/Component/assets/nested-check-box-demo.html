@@ -1,20 +1,24 @@
-<div class="well">
-    <form #testForm="ngForm">
-        <nested-option-list
-                [options]="canBeModified"
+<form #testForm="ngForm">
+    <check-box [(ngModel)]="model.required"
+               name="required"
+               label="Is Required"
+               labelPlacement="after"></check-box>
+    <div class="card card-body bg-light">
+        <nested-check-box
+                [options]="model.options"
                 [(ngModel)]="model.selected"
-                required="true"
+                [required]="model.required"
                 name="testList"
                 label="Test Nested Options"
                 [selectBy]="'name'"
                 [searchBy]="['name']">
-        </nested-option-list>
-        <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
-    </form>
-</div>
-<ul class="nav nav-tabs nav-justified">
-    <li class="nav-item active">
-        <a class="nav-link" data-toggle="tab" href="#nested-select-markup" role="tab">
+        </nested-check-box>
+    </div>
+    <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
+</form>
+<ul class="nav nav-tabs">
+    <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#nested-select-markup" role="tab">
             HTML
         </a>
     </li>
