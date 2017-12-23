@@ -14,7 +14,7 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'radio',
     template     : `
-        <div class="form-group validate">
+        <div class="form-group validate-input">
             <label *ngIf="labelPlacement === 'above'">
                 {{ label }}
             </label>

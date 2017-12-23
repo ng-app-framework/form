@@ -1,8 +1,8 @@
 import {EventEmitter, Injector, OnDestroy, OnInit} from "@angular/core";
-import {FormControl, NgControl, NgModel} from "@angular/forms";
+import {FormControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NgControl, NgModel} from "@angular/forms";
 import {Value} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
-import {ValidatorMessenger} from "../Validation/Service/ValdiatorMessenger";
+import {ValidatorMessenger} from "../Validation/Service/ValidatorMessenger";
 import {AsyncValidatorArray, validate, ValidatorResults, ValidatorArray} from "../Validation/validate";
 import {BaseValueAccessor} from "../ValueAccessor/BaseValueAccessor";
 
@@ -35,26 +35,14 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
 
     isValueProvided = false;
 
-    constructor(public injector: Injector,
-                protected validators: ValidatorArray           = [],
-                protected asyncValidators: AsyncValidatorArray = []) {
+    validators: ValidatorArray           = [];
+    asyncValidators: AsyncValidatorArray = [];
+
+    constructor(public injector: Injector) {
         super();
-        this.messenger = this.injector.get(ValidatorMessenger);
-    }
-
-
-    private validateOnChange() {
-        this.valueChange.takeUntil(this.onDestroy$)
-            .subscribe(() => {
-                this.updateIsValueProvided();
-                this.triggerValidate();
-            });
-    }
-
-    private validateOnInterval() {
-        Observable.interval(800)
-            .takeUntil(this.onDestroy$)
-            .subscribe(() => this.triggerValidate());
+        this.messenger       = this.injector.get(ValidatorMessenger);
+        this.validators      = <any>this.injector.get(NG_VALIDATORS, []);
+        this.asyncValidators = <any>this.injector.get(NG_ASYNC_VALIDATORS, []);
     }
 
     private updateValidityFlags(errors) {
@@ -65,11 +53,17 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     }
 
     private validate(): Observable<ValidatorResults> {
-        return <any>validate((this.validators || []).concat(this.additionalValidators || []), this.asyncValidators || [])(this.model.control);
+        return <any>validate((this.validators).concat(this.additionalValidators), this.asyncValidators)(this.model.control);
     }
 
     ngOnDestroy() {
         this.onDestroy$.emit();
+    }
+
+    ngOnChanges() {
+        if (this.model) {
+            this.triggerValidate();
+        }
     }
 
     ngOnInit() {
@@ -77,8 +71,6 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
             this.shouldValidate = this.shouldValidate.toString() === 'true' || this.shouldValidate === true;
             this.model          = this.injector.get(NgControl);
             this.updateIsValueProvided();
-            this.validateOnChange();
-            this.validateOnInterval();
             this.initialized = true;
         } catch (e) {
             throw new Error("[(ngModel)] was not provided");
@@ -104,6 +96,14 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
                     }
                 });
         }
+    }
+
+    isInvalid() {
+        return this.invalid && this.isTouched();
+    }
+
+    isTouched() {
+        return this.control.touched;
     }
 
     get control() {

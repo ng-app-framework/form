@@ -8,18 +8,21 @@ import {TextBoxComponent} from './TextBoxComponent';
     selector     : 'email',
     template     : `
         <text-box [placeholder]="placeholder"
-                  [class.validate]="shouldValidate"
+                  [class.validate-input]="shouldValidate"
                   [name]="name"
                   [label]="label"
                   [invalid]="invalid"
                   [failures]="failures"
                   [email]="isValueProvided"
-                  icon="envelope"
                   [disabled]="disabled"
                   [(ngModel)]="value"
                   [shouldValidate]="false"
                   [parentFormControl]="control"
-        ></text-box>
+        >
+            <span class="input-group-addon before-input">
+                <span class="fa fa-envelope"></span>
+            </span>
+        </text-box>
     `,
     styleUrls    : ['./assets/field.scss'],
     providers    : [{
@@ -44,10 +47,8 @@ export class EmailComponent extends NgFormControl<string> {
 
     @ViewChild('textBox') textBox: TextBoxComponent;
 
-    constructor(public injector: Injector,
-                @Optional() @Inject(NG_VALIDATORS)  defaultValidators: Array<any>,
-                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
-        super(injector, defaultValidators, asyncValidators);
+    constructor(public injector: Injector) {
+        super(injector);
     }
 
 

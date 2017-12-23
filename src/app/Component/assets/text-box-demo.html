@@ -11,9 +11,10 @@
                 label="Test Text Field"
                 [(ngModel)]="model.value"
                 [matchValue]="model.shouldMatch ? {value:model.match,label:'Matching Field'} : null"
-                [icon]="model.icon"
                 [required]="model.required"
-                [placeholder]="model.placeholder"></text-box>
+                [placeholder]="model.placeholder">
+            <span class="input-group-addon before-input fa fa-{{model.icon}}" *ngIf="model.icon.length > 0"></span>
+        </text-box>
     </div>
     <submit-button label="Submit" [formGroup]="testForm.form"></submit-button>
 </form>

@@ -17,8 +17,13 @@ export abstract class BaseValueAccessor<T> implements ControlValueAccessor {
     }
 
     set value(value: T) {
-        if (this.innerValue !== value) {
-            this.innerValue = value;
+        this.updateInnerValue(value);
+    }
+
+    protected updateInnerValue(value: T) {
+        let isDifferent = this.innerValue !== value;
+        this.innerValue = value;
+        if (isDifferent) {
             this.changed.forEach(f => f(value));
             this.valueChange.emit(value);
         }

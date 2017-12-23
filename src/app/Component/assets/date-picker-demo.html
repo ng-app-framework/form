@@ -1,5 +1,13 @@
 <form #testForm="ngForm">
-    <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
+    <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after" ></check-box>
+    <date-picker
+            name="minDate"
+            label="Minimum Date"
+            [(ngModel)]="model.minDate"></date-picker>
+    <date-picker
+            name="maxDate"
+            label="Maximum Date"
+            [(ngModel)]="model.maxDate"></date-picker>
     <div class="card card-body bg-light">
         <date-picker
              name="testDatepicker"

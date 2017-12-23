@@ -1,16 +1,16 @@
 import {
     Component, Inject, Input, Optional, ViewChild, ViewEncapsulation, Injector,
-    ChangeDetectorRef
+    ChangeDetectorRef, Output, EventEmitter
 } from '@angular/core';
 import {NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgModel, FormControl} from "@angular/forms";
-import 'rxjs/Rx';
 import {OnChange} from "@ng-app-framework/core";
+import {Observable} from "rxjs/Rx";
 import {NgFormControl} from "../NgFormControl";
 
 @Component({
     selector     : 'text-box',
     template     : `
-        <div class="form-group" [class.validate]="shouldValidate" *ngIf="initialized">
+        <div class="form-group" [class.validate-input]="shouldValidate" [hidden]="!initialized">
             <validation-messages *ngIf="isInvalid()" [messages]="failures">
             </validation-messages>
             <label [attr.for]="identifier" *ngIf="label.length > 0">
@@ -18,34 +18,19 @@ import {NgFormControl} from "../NgFormControl";
                 <ng-container *ngIf="required">*</ng-container>
             </label>
             <div></div>
-            <ng-container *ngIf="!isIconProvided()">
-                <input class="form-control ng-control" type="text"
-                       [placeholder]="placeholder || ''"
-                       [id]="identifier"
-                       [name]="name"
-                       [disabled]="disabled"
-                       [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}"
-                       [(ngModel)]="value"
-                       (blur)="control.markAsTouched()"
-                />
-            </ng-container>
-            <div class="input-group" *ngIf="isIconProvided()">
-                <span class="input-group-addon ng-control" *ngIf="isIconPlacementBefore()"
-                      [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
-                    <span class="fa fa-{{icon}}"></span>
-                </span>
-                <input class="form-control" type="text"
+            <div class="input-group ng-control" (click)="click.emit()"
+                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
+                <ng-content select=".before-input"></ng-content>
+                <input class="form-control" type="text" #input
+                       (focus)="inputFocus.emit()"
                        [placeholder]="placeholder || ''"
                        [id]="identifier"
                        [name]="name"
                        [disabled]="disabled"
                        [(ngModel)]="value"
-                       (blur)="control.markAsTouched()"
+                       (blur)="onBlur()"
                 />
-                <span class="input-group-addon ng-control" *ngIf="!isIconPlacementBefore()"
-                      [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
-                    <span class="fa fa-{{icon}}"></span>
-                </span>
+                <ng-content select=".after-input"></ng-content>
             </div>
         </div>
     `,
@@ -68,34 +53,35 @@ export class TextBoxComponent extends NgFormControl<string> {
     @Input() shouldValidate               = true;
     @OnChange @Input() invalid: boolean   = false;
     @OnChange @Input() failures: string[] = [];
+    @Output() click                       = new EventEmitter<any>();
+    @Output() inputClick                  = new EventEmitter<any>();
+    @Output() inputFocusOut               = new EventEmitter<any>();
+    @Output() inputFocus                  = new EventEmitter<any>();
 
-    @Input() icon: string          = '';
-    @Input() iconPlacement: string = 'before';
+    @Input() format: { regex: RegExp | RegExp[], replacement: string | Function };
+
+    @ViewChild("input") input;
 
     protected identifier           = `text-box-${identifier++}`;
-              additionalValidators = [];
 
-    constructor(public injector: Injector,
-                public cdr: ChangeDetectorRef,
-                @Optional() @Inject(NG_VALIDATORS)  defaultValidators: Array<any>,
-                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
-        super(injector, defaultValidators, asyncValidators);
+    constructor(public injector: Injector) {
+        super(injector);
     }
 
-    isInvalid() {
-        return this.invalid && this.isTouched();
+    ngOnInit() {
+        super.ngOnInit();
+        Observable.fromEvent(this.input.nativeElement, 'keydown')
+            .takeUntil(this.onDestroy$)
+            .subscribe((event: KeyboardEvent) => {
+                if (event.key === 'Tab') {
+                    this.onBlur();
+                }
+            });
     }
 
-    isTouched() {
-        return this.control.touched;
-    }
-
-    isIconProvided() {
-        return this.icon.length > 0;
-    }
-
-    isIconPlacementBefore() {
-        return this.iconPlacement === 'before';
+    protected onBlur() {
+        this.control.markAsTouched();
+        this.inputFocusOut.emit();
     }
 }
 

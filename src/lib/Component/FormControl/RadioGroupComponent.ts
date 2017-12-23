@@ -61,10 +61,8 @@ export class RadioGroupComponent extends NgFormControl<any> implements OnInit, O
 
     @ViewChild("element") element;
 
-    constructor(@Inject(Injector) public injector: Injector,
-                @Optional() @Inject(NG_VALIDATORS)  validators: Array<any>,
-                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
-        super(injector, validators, asyncValidators);
+    constructor(@Inject(Injector) public injector: Injector) {
+        super(injector);
     }
 
     ngOnInit() {

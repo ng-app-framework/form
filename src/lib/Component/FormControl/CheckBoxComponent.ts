@@ -14,7 +14,7 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
 @Component({
     selector     : 'check-box',
     template     : `
-        <div class="form-group" [class.validate]="shouldValidate">
+        <div class="form-group" [class.validate-input]="shouldValidate">
             <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
             </validation-messages>
             <label *ngIf="labelPlacement === 'above'">
@@ -22,7 +22,8 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
                 <span *ngIf="required">*</span>
             </label>
             <div></div>
-            <div (click)="updateState();markAsTouched();" class="input-group check-container" tabindex="0" #element
+            <div (click)="updateState();markAsTouched();" class="input-group check-container ng-control" tabindex="0" #element
+                 [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
                  [class.label-above]="labelPlacement === 'above'">
                 <span class="form-control" *ngIf="labelPlacement === 'before'">
                     <label>
@@ -30,12 +31,12 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
                         <span *ngIf="required">*</span>
                     </label>
                 </span>
-                <div class="input-group-addon ng-control"
-                     [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}">
+                <div class="input-group-addon">
                     <input readonly #checkbox type="checkbox"
                            [id]="identifier"
                            [disabled]="disabled"
                            [attr.checked]="checked || null"
+                           [value]="checkedValue"
                            tabindex="-1"/>
                 </div>
                 <span class="form-control" *ngIf="labelPlacement === 'after'">
@@ -84,10 +85,8 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
 
     requiredValidator = new RequiredCheckBoxValidator();
 
-    constructor(@Inject(Injector) public injector: Injector,
-                @Optional() @Inject(NG_VALIDATORS)  validators: Array<any>,
-                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
-        super(injector, validators, asyncValidators);
+    constructor(@Inject(Injector) public injector: Injector) {
+        super(injector);
         this.additionalValidators = [this.requiredValidator];
     }
 
@@ -101,9 +100,7 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
     watchChanges() {
         this.requiredChange.merge(this.stateChange).takeUntil(this.onDestroy$).subscribe(() => {
             this.updateCheckedStatus();
-        });
-        this.requiredChange.takeUntil(this.onDestroy$).subscribe(value => {
-            this.requiredValidator.required = value;
+            this.triggerValidate();
         });
         Observable.fromEvent(this.element.nativeElement, 'keydown')
             .takeUntil(this.onDestroy$)

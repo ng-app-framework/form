@@ -18,11 +18,11 @@ import {NgFormControl} from "../NgFormControl";
                 {{label}}
             </label>
             <div></div>
+            <text-box [hidden]="!areOptionsInitialized" name="nested-check-box-search" class="full-width"
+                      [(ngModel)]="searcher.search"
+                      placeholder="Search ..." icon="search"
+                      shouldValidate="false"></text-box>
             <ng-container *ngIf="areOptionsInitialized">
-                <text-box name="nested-check-box-search" class="full-width"
-                          [(ngModel)]="searcher.search"
-                          placeholder="Search ..." icon="search"
-                          shouldValidate="false"></text-box>
                 <nested-list class="form-control expandable" #scrollable
                              [element]="{children: initializedOptions}"
                              [showLines]="false"
@@ -81,10 +81,8 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
 
 
     constructor(differs: KeyValueDiffers,
-                public injector: Injector,
-                @Optional() @Inject(NG_VALIDATORS)  validators: Array<any>,
-                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
-        super(injector, validators, asyncValidators);
+                public injector: Injector) {
+        super(injector);
         this.selectionDiffer = differs.find({}).create();
     }
 

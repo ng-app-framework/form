@@ -11,7 +11,7 @@ check-box, nested-list, nested-check-box, date-picker, email {
         user-select: none;
     }
     .alert-danger ul {
-        margin-bottom:0;
+        margin-bottom: 0;
     }
     .form-control {
         width: auto;
@@ -19,20 +19,27 @@ check-box, nested-list, nested-check-box, date-picker, email {
     .input-group {
         width: auto;
         white-space: nowrap;
-        display:inline-flex;
+        display: inline-flex;
+        border-radius: 0.25em;
+        overflow: hidden;
+        border: 1px solid #ccc;
+
         .form-control {
             flex-grow: 0;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+            border: none;
         }
         .input-group-addon {
+            border-top:none;
             &:first-child {
-                border-top-left-radius: 0.25em;
-                border-bottom-left-radius: 0.25em;
-                border-left: 1px solid #ccc;
+                border-bottom:none;
+                border-left:none;
             }
             &:last-child {
                 border-top-right-radius: 0.25em;
                 border-bottom-right-radius: 0.25em;
-                border-right: 1px solid #ccc;
+                border-right:none;
             }
         }
         .input-group-btn {
@@ -56,25 +63,13 @@ check-box, nested-list, nested-check-box, date-picker, email {
         user-select: none;
     }
     .d-flex > radio {
-        margin-right:10px;
+        margin-right: 10px;
         &:last-child {
-            margin-right:0;
+            margin-right: 0;
         }
     }
 }
-
-.full-width {
-    .form-group {
-        .input-group,
-        .form-control,
-        .ng-select,
-        .input-group span.form-control {
-            width: 100%;
-        }
-    }
-}
-
-.form-group.validate, .validate, .form-group.validate .input-group {
+.validate-input, .validate-input .input-group {
     .ng-control, .ng-select > .ng-control {
         border: 1px solid #ccc;
         border-left: 5px solid #ccc;
@@ -96,6 +91,16 @@ check-box, nested-list, nested-check-box, date-picker, email {
     .ng-invalid:not(form).ng-touched {
         .ng-control, .ng-select.focused:not(.opened) > .ng-control {
             border-left: 5px solid #a94442; /* red */
+        }
+    }
+}
+.full-width {
+    .form-group {
+        .input-group,
+        .form-control,
+        .ng-select,
+        .input-group span.form-control {
+            width: 100%;
         }
     }
 }

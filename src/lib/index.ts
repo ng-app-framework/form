@@ -14,7 +14,7 @@ export * from "./Component/SubmitButtonComponent";
 export * from "./Validation/Component/ValidationMessagesComponent";
 export * from "./Validation/Directive/MatchValueValidator";
 export * from "./Validation/Directive/RequiredCheckBoxValidator";
-export * from "./Validation/Service/ValdiatorMessenger";
+export * from "./Validation/Service/ValidatorMessenger";
 export * from "./ValueAccessor/BaseValueAccessor";
 export * from "./Service/Interface/SelectorInterface";
 export * from "./Service/Impl/MultiSelector";

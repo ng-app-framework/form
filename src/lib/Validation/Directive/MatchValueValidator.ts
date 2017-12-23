@@ -1,6 +1,6 @@
 import {Directive, forwardRef, Input} from "@angular/core";
 import {AbstractControl, NG_VALIDATORS, RequiredValidator, Validators} from "@angular/forms";
-import {ValidatorMessenger} from "../Service/ValdiatorMessenger";
+import {ValidatorMessenger} from "../Service/ValidatorMessenger";
 import {ValidatorResults} from "../validate";
 
 @Directive({

@@ -13,7 +13,7 @@ import {NgFormControl} from "../NgFormControl";
         <ng-template #defaultOption let-item>
             {{ item.text }}
         </ng-template>
-        <div class="form-group" [class.validate]="shouldValidate">
+        <div class="form-group" [class.validate-input]="shouldValidate">
             <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
             </validation-messages>
             <label [attr.for]="identifier">
@@ -104,10 +104,8 @@ export class DropDownComponent extends NgFormControl<any> implements OnInit, OnD
     identifier = `option-list-${identifier++}`;
 
 
-    constructor(@Inject(Injector) public injector: Injector,
-                @Optional() @Inject(NG_VALIDATORS)  validators: Array<any>,
-                @Optional() @Inject(NG_ASYNC_VALIDATORS)  asyncValidators: Array<any>) {
-        super(injector, validators, asyncValidators);
+    constructor(@Inject(Injector) public injector: Injector) {
+        super(injector);
     }
 
     ngOnInit() {

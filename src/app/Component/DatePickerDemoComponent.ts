@@ -8,9 +8,10 @@ import {Component, ViewEncapsulation} from "@angular/core";
 export class DatePickerDemoComponent {
 
     model = {
-        value  : new Date(),
-        minDate: new Date(),
-        maxDate: new Date()
+        value   : null,
+        required: false,
+        minDate : new Date(),
+        maxDate : new Date()
     };
 
     markup = `
