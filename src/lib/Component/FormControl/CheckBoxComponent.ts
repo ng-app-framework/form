@@ -1,9 +1,9 @@
 import {
     ViewEncapsulation, Component, Input, EventEmitter, Output, ViewChild, OnInit, OnDestroy,
-    Inject, Optional, Injector
+    Inject, Injector
 } from '@angular/core';
 import {
-    NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR
+    NG_VALUE_ACCESSOR
 } from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
@@ -102,7 +102,7 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
             this.updateCheckedStatus();
             this.triggerValidate();
         });
-        Observable.fromEvent(this.element.nativeElement, 'keydown')
+        Observable.fromEvent(this.element.nativeElement, 'keypress')
             .takeUntil(this.onDestroy$)
             .subscribe((event: KeyboardEvent) => {
                 if (event.key === ' ') {

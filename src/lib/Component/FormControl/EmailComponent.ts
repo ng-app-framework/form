@@ -1,5 +1,5 @@
-import {Component, Inject, Input, Optional, ViewChild, ViewEncapsulation, Injector} from '@angular/core';
-import {FormControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgModel} from "@angular/forms";
+import {Component, Input, ViewChild, ViewEncapsulation, Injector} from '@angular/core';
+import {FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
 import {TextBoxComponent} from './TextBoxComponent';
@@ -13,7 +13,7 @@ import {TextBoxComponent} from './TextBoxComponent';
                   [label]="label"
                   [invalid]="invalid"
                   [failures]="failures"
-                  [email]="isValueProvided"
+                  [email]="isProvided()"
                   [disabled]="disabled"
                   [(ngModel)]="value"
                   [shouldValidate]="false"
@@ -51,5 +51,7 @@ export class EmailComponent extends NgFormControl<string> {
         super(injector);
     }
 
-
+    isProvided() {
+        return this.value && this.value.length > 0;
+    }
 }

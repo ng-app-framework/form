@@ -18,7 +18,6 @@ import {SubmitButtonComponent} from './Component/SubmitButtonComponent';
 import {TextBoxComponent} from './Component/FormControl/TextBoxComponent';
 import {MatchValueValidator} from './Validation/Directive/MatchValueValidator';
 import {ValidatorMessenger} from "./Validation/Service/ValidatorMessenger";
-import {DateValidator} from './Validation/Directive/DateValidator';
 
 @NgModule({
     declarations: [
@@ -34,8 +33,7 @@ import {DateValidator} from './Validation/Directive/DateValidator';
         TextBoxComponent,
         MatchValueValidator,
         RadioGroupComponent,
-        RadioComponent,
-        DateValidator
+        RadioComponent
     ],
     imports     : [
         CommonModule,
@@ -59,12 +57,10 @@ import {DateValidator} from './Validation/Directive/DateValidator';
         TextBoxComponent,
         MatchValueValidator,
         RadioGroupComponent,
-        RadioComponent,
-        DateValidator
+        RadioComponent
     ],
     providers   : [
         RequiredCheckBoxValidator,
-        DateValidator,
         ValidatorMessenger
     ]
 })

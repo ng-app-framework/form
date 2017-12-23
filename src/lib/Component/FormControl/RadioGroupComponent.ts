@@ -1,9 +1,9 @@
 import {
-    ViewEncapsulation, Component, Input, EventEmitter, Output, ViewChild, OnInit, OnDestroy,
-    Inject, Optional, Injector
+    ViewEncapsulation, Component, Input, EventEmitter, ViewChild, OnInit, OnDestroy,
+    Inject, Injector
 } from '@angular/core';
 import {
-    NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, RequiredValidator
+    NG_VALUE_ACCESSOR, RequiredValidator
 } from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
@@ -53,23 +53,10 @@ export class RadioGroupComponent extends NgFormControl<any> implements OnInit, O
 
     @Input() options: { label: string, value: any }[] = [];
 
-    requiredChange = new EventEmitter<boolean>();
-
     identifier = `radio-group-${identifier++}`;
-
-    requiredValidator = new RequiredValidator();
-
-    @ViewChild("element") element;
 
     constructor(@Inject(Injector) public injector: Injector) {
         super(injector);
-    }
-
-    ngOnInit() {
-        super.ngOnInit();
-        this.additionalValidators.push(this.requiredValidator);
-        this.requiredValidator.required = this.required;
-        this.requiredChange.takeUntil(this.onDestroy$).subscribe(value => this.requiredValidator.required = this.required);
     }
 
 }

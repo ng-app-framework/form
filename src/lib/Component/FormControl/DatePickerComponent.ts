@@ -4,15 +4,13 @@ import {
     Input,
     Injector,
     Inject,
-    Optional,
     ViewChild,
     ElementRef,
 } from '@angular/core';
-import {NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, AbstractControl} from "@angular/forms";
-import {OnChange, SiteConfig, Value} from "@ng-app-framework/core";
-import 'rxjs/Rx';
+import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import {SiteConfig, Value} from "@ng-app-framework/core";
 import {BsDatepickerDirective} from "ngx-bootstrap/datepicker";
-import {Observable} from "rxjs/Observable";
+import {Observable} from "rxjs/Rx";
 import {NgFormControl} from "../NgFormControl";
 
 

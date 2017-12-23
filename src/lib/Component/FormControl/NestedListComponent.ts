@@ -2,7 +2,6 @@ import {
     ViewEncapsulation, Component, Input, ContentChild, TemplateRef, EventEmitter, OnInit, OnDestroy
 } from '@angular/core';
 import {UnsubscribeAll, Value} from "@ng-app-framework/core";
-import 'rxjs/Rx';
 import {Observable} from "rxjs/Rx";
 
 @Component({

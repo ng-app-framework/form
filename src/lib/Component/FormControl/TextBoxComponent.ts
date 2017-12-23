@@ -1,8 +1,8 @@
 import {
-    Component, Inject, Input, Optional, ViewChild, ViewEncapsulation, Injector,
-    ChangeDetectorRef, Output, EventEmitter
+    Component, Input, ViewChild, ViewEncapsulation, Injector,
+    Output, EventEmitter
 } from '@angular/core';
-import {NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR, NgModel, FormControl} from "@angular/forms";
+import {NG_VALUE_ACCESSOR, FormControl} from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
 import {NgFormControl} from "../NgFormControl";

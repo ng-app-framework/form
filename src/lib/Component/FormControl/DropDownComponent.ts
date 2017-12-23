@@ -1,10 +1,9 @@
 import {
-    ViewEncapsulation, Component, Input, Output, EventEmitter, OnInit, OnDestroy, Injector,
-    Inject, Optional, ViewChild, ContentChild, TemplateRef
+    ViewEncapsulation, Component, Input, EventEmitter, OnInit, OnDestroy, Injector,
+    Inject, ViewChild, ContentChild, TemplateRef
 } from '@angular/core';
-import {NG_ASYNC_VALIDATORS, NG_VALIDATORS, NG_VALUE_ACCESSOR} from "@angular/forms";
-import {OnChange, Value} from "@ng-app-framework/core";
-import {NgSelectComponent} from "@ng-select/ng-select";
+import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import {Value} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
 
 @Component({
@@ -14,14 +13,16 @@ import {NgFormControl} from "../NgFormControl";
             {{ item.text }}
         </ng-template>
         <div class="form-group" [class.validate-input]="shouldValidate">
-            <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
+            <validation-messages *ngIf="isInvalid()" [messages]="failures">
             </validation-messages>
             <label [attr.for]="identifier">
                 {{ label }}
                 <ng-container *ngIf="required">*</ng-container>
             </label>
             <div></div>
-            <div class="input-group">
+            <div class="input-group"
+                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!(isInvalid()) && !isTouched()}"
+                 *ngIf="initialized">
                 <span class="input-group-addon" *ngIf="isIconProvided() && isIconPlacementBefore()">
                     <span class="fa fa-{{icon}}"></span>
                 </span>
@@ -32,9 +33,10 @@ import {NgFormControl} from "../NgFormControl";
                         [bindValue]="selectBy"
                         [bindLabel]="labelField"
                         [multiple]="isMultiple"
-                        [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
                         [placeholder]="placeholder"
                         [(ngModel)]="value"
+                        (blur)="triggerValidate();control.markAsTouched()"
+                        (change)="triggerValidate();control.markAsTouched()"
                         #ngSelect
                 >
                     <ng-template ng-option-tmp let-item="item">
@@ -66,7 +68,6 @@ import {NgFormControl} from "../NgFormControl";
 export class DropDownComponent extends NgFormControl<any> implements OnInit, OnDestroy {
 
     @Input() @ContentChild(TemplateRef) template;
-    @ViewChild('ngSelect') ngSelect: NgSelectComponent;
 
     private _isMultiple = false;
 
@@ -77,7 +78,7 @@ export class DropDownComponent extends NgFormControl<any> implements OnInit, OnD
 
     public set isMultiple(value: boolean) {
         this._isMultiple = value;
-        if (this.isInitialized) {
+        if (this.initialized) {
             setTimeout(() => {
                 this.onMultipleChange();
             });
@@ -99,7 +100,6 @@ export class DropDownComponent extends NgFormControl<any> implements OnInit, OnD
     @Input() icon: string          = '';
     @Input() iconPlacement: string = 'before';
 
-    isInitialized = false;
 
     identifier = `option-list-${identifier++}`;
 
@@ -110,15 +110,10 @@ export class DropDownComponent extends NgFormControl<any> implements OnInit, OnD
 
     ngOnInit() {
         super.ngOnInit();
-        this.isInitialized = true;
-        this.ngSelect.blurEvent.merge(this.ngSelect.changeEvent).takeUntil(this.onDestroy$).subscribe(() => {
-            this.model.control.markAsTouched();
-        });
     }
 
     ngOnDestroy() {
         this.onDestroy$.emit();
-        this.isInitialized = false;
     }
 
     onMultipleChange() {

@@ -72,7 +72,7 @@ export class RadioComponent extends NgFormControl<any> implements OnInit, OnDest
     shouldValidate = false;
 
     constructor(@Inject(Injector) public injector: Injector) {
-        super(injector, [], []);
+        super(injector);
     }
 
     ngOnInit() {
