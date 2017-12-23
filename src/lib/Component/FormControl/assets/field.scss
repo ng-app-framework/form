@@ -30,15 +30,15 @@ check-box, nested-list, nested-check-box, date-picker, email {
             border: none;
         }
         .input-group-addon {
-            border-top:none;
+            border-top: none;
             &:first-child {
-                border-bottom:none;
-                border-left:none;
+                border-bottom: none;
+                border-left: none;
             }
             &:last-child {
                 border-top-right-radius: 0.25em;
                 border-bottom-right-radius: 0.25em;
-                border-right:none;
+                border-right: none;
             }
         }
         .input-group-btn {
@@ -68,31 +68,26 @@ check-box, nested-list, nested-check-box, date-picker, email {
         }
     }
 }
+
 .validate-input, .validate-input .input-group {
-    .ng-control, .ng-select > .ng-control {
-        border: 1px solid #ccc;
-        border-left: 5px solid #ccc;
-        &.ng-valid:not(form).ng-touched {
-            border-left: 5px solid #42A948; /* green */
-        }
+    :not(.no-validate) {
+        .ng-control, &.ng-control {
+            border: 1px solid #ccc;
+            border-left: 5px solid #ccc;
+            &.ng-valid:not(form).ng-touched {
+                border-left: 5px solid #42A948; /* green */
+            }
 
-        &.ng-invalid:not(form).ng-touched {
-            border-left: 5px solid #a94442; /* red */
-        }
-    }
-
-    .ng-valid:not(form).ng-touched {
-        .ng-control, .ng-select.focused:not(.opened) > .ng-control {
-            border-left: 5px solid #42A948; /* green */
-        }
-    }
-
-    .ng-invalid:not(form).ng-touched {
-        .ng-control, .ng-select.focused:not(.opened) > .ng-control {
-            border-left: 5px solid #a94442; /* red */
+            &.ng-invalid:not(form).ng-touched {
+                border-left: 5px solid #a94442; /* red */
+            }
+            .ng-control {
+                border: none;
+            }
         }
     }
 }
+
 .full-width {
     .form-group {
         .input-group,

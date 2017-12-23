@@ -8,7 +8,8 @@ import {Component, EventEmitter, ViewEncapsulation} from "@angular/core";
 export class DropDownDemoComponent {
     model = {
         isMultiple: false,
-        required: false,
+        icon      : '',
+        required  : false,
         selected  : null,
         options   : [
             {id: 1, text: 'Label 1'},

@@ -1,6 +1,7 @@
 <form #testForm="ngForm" novalidate>
     <check-box [(ngModel)]="model.required" name="required" label="Is Required" labelPlacement="after"></check-box>
     <check-box [(ngModel)]="model.isMultiple" name="isMultiple" label="Is Multiple" labelPlacement="after"></check-box>
+    <text-box name="icon" label="Icon" [(ngModel)]="model.icon"></text-box>
     <div class="card card-body bg-light">
         <drop-down
                 [options]="model.options"
@@ -8,6 +9,7 @@
                 class="full-width"
                 name="testOptionList"
                 label="Test Option List"
+                [icon]="model.icon"
                 [required]="model.required"
                 [(ngModel)]="model.selected"
                 [isMultiple]="model.isMultiple"

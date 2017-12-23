@@ -22,7 +22,8 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
                 <span *ngIf="required">*</span>
             </label>
             <div></div>
-            <div (click)="updateState();markAsTouched();" class="input-group check-container ng-control" tabindex="0" #element
+            <div (click)="updateState();markAsTouched();" class="input-group check-container ng-control" tabindex="0"
+                 #element
                  [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
                  [class.label-above]="labelPlacement === 'above'">
                 <span class="form-control" *ngIf="labelPlacement === 'before'">
@@ -68,6 +69,7 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
     @Input() labelPlacement: string      = 'above';
     @Input() checkedValue: any           = true;
     @Input() disabled: boolean           = false;
+    @Input() shouldValidate: boolean     = true;
     @OnChange @Input() required: boolean = false;
 
     requiredChange          = new EventEmitter<boolean>();

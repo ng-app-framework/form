@@ -2,7 +2,7 @@ import {
     ViewEncapsulation, Component, Input, EventEmitter, OnDestroy, OnInit, ViewChild,
     Injector, KeyValueDiffers, KeyValueDiffer, DoCheck
 } from '@angular/core';
-import {FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {AbstractControl, FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {NestedSearcher} from "../../Service/Impl/NestedSearcher";
 import {Async, OnChange, Value} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
@@ -31,9 +31,11 @@ import {NgFormControl} from "../NgFormControl";
                     <ng-template let-item>
                         <check-box #checkbox [threeState]="hasChildren(item)"
                                    (onInit)="item.checkbox = checkbox"
+                                   [shouldValidate]="false"
                                    [class.bold]="shouldBold$(item) | async"
                                    labelPlacement="after"
                                    [(ngModel)]="selection[item[selectBy]]"
+                                   (ngModelChange)="control.markAsTouched()"
                                    (stateChange)="updateChildrenOfItem(item, $event).subscribe()"
                                    [name]="item.name"
                                    [label]="item.name">
@@ -79,6 +81,14 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
 
     protected selectionDiffer: KeyValueDiffer<string, boolean>;
 
+    additionalValidators = [{
+        validate: (control:AbstractControl) => {
+            if (this.required && (!control.value || control.value.length === 0)) {
+                return {required:true};
+            }
+            return null;
+        }
+    }];
 
     constructor(differs: KeyValueDiffers,
                 public injector: Injector) {
@@ -120,6 +130,7 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
         const changes = this.selectionDiffer.diff(this.selection);
         if (changes && this.areOptionsInitialized) {
             this.value = Object.keys(this.selection).filter(key => this.selection[key]);
+            this.triggerValidate();
         }
     }
 

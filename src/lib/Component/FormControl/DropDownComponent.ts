@@ -20,8 +20,8 @@ import {NgFormControl} from "../NgFormControl";
                 <ng-container *ngIf="required">*</ng-container>
             </label>
             <div></div>
-            <div class="input-group"
-                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!(isInvalid()) && !isTouched()}"
+            <div class="input-group ng-control"
+                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!(isInvalid()) && isTouched()}"
                  *ngIf="initialized">
                 <span class="input-group-addon" *ngIf="isIconProvided() && isIconPlacementBefore()">
                     <span class="fa fa-{{icon}}"></span>

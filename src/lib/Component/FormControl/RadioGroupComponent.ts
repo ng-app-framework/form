@@ -24,6 +24,7 @@ import {NgFormControl} from "../NgFormControl";
                 <ng-container *ngFor="let option of options">
                     <radio [name]="name" [label]="option[bindLabel]" [(ngModel)]="value" [invalid]="invalid"
                            [checkedValue]="option[bindValue]" [parentFormControl]="control"
+                           (ngModelChange)="triggerValidate()"
                            (onTouch)="control.markAsTouched()"></radio>
                 </ng-container>
             </div>
