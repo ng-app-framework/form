@@ -1,5 +1,5 @@
 import {EventEmitter, Injector, OnDestroy, OnInit} from "@angular/core";
-import {FormControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NgControl, NgModel} from "@angular/forms";
+import {FormControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NgControl, NgModel, RequiredValidator} from "@angular/forms";
 import {Value} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
 import {ValidatorMessenger} from "../Validation/Service/ValidatorMessenger";
@@ -39,7 +39,7 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
         super();
     }
 
-    private updateValidityFlags(errors) {
+    updateValidityFlags(errors) {
         this.invalid  = errors !== null && typeof errors !== 'undefined';
         this.failures = !this.invalid ? [] : this.failures;
         if (this.invalid) {
@@ -48,7 +48,7 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
         }
     }
 
-    private validate(): Observable<ValidatorResults> {
+    validate(): Observable<ValidatorResults> {
         return <any>validate((this.validators).concat(this.additionalValidators), this.asyncValidators)(this.model.control);
     }
 
@@ -56,9 +56,11 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
         this.onDestroy$.emit();
     }
 
-    ngOnChanges() {
+    ngDoCheck() {
         if (this.initialized) {
-            this.triggerValidate();
+            if (this.control.touched) {
+                this.triggerValidate();
+            }
         }
     }
 

@@ -62,7 +62,7 @@ export class TextBoxComponent extends NgFormControl<string> {
 
     @ViewChild("input") input;
 
-    protected identifier           = `text-box-${identifier++}`;
+    protected identifier = `text-box-${identifier++}`;
 
     constructor(public injector: Injector) {
         super(injector);

@@ -11,18 +11,20 @@ import {TextBoxComponent} from './TextBoxComponent';
                   [class.validate-input]="shouldValidate"
                   [name]="name"
                   [label]="label"
-                  [invalid]="invalid"
-                  [failures]="failures"
+                  [(invalid)]="invalid"
+                  [(failures)]="failures"
                   [email]="isProvided()"
                   [disabled]="disabled"
                   [(ngModel)]="value"
                   [shouldValidate]="false"
                   [parentFormControl]="control"
+                  (inputFocusOut)="triggerValidate()"
         >
             <span class="input-group-addon before-input">
                 <span class="fa fa-envelope"></span>
             </span>
         </text-box>
+        <pre>invalid: {{invalid}} - failures: {{failures | json}}</pre>
     `,
     styleUrls    : ['./assets/field.scss'],
     providers    : [{
@@ -51,6 +53,22 @@ export class EmailComponent extends NgFormControl<string> {
         super(injector);
     }
 
+    ngOnInit() {
+        super.ngOnInit();
+    }
+
+    triggerValidate() {
+        console.log(this.shouldValidate, this.initialized);
+        if (this.shouldValidate && this.initialized) {
+            console.log(this.label, 'validating');
+            this.validate()
+                .distinctUntilChanged()
+                .subscribe(errors => {
+                    this.updateValidityFlags(errors);
+                    console.log(this.label, errors);
+                });
+        }
+    }
     isProvided() {
         return this.value && this.value.length > 0;
     }

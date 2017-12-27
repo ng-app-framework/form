@@ -3,7 +3,7 @@ import {
     Inject, Injector
 } from '@angular/core';
 import {
-    NG_VALUE_ACCESSOR
+    NG_VALUE_ACCESSOR, RequiredValidator
 } from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
@@ -85,7 +85,7 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
 
     @Output() onInit = new EventEmitter<any>();
 
-    requiredValidator = new RequiredCheckBoxValidator();
+    requiredValidator:RequiredValidator = new RequiredCheckBoxValidator();
 
     constructor(@Inject(Injector) public injector: Injector) {
         super(injector);

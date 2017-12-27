@@ -11,18 +11,18 @@ import {AbstractControl, NG_VALIDATORS, RequiredValidator, Validators} from "@an
     }],
     host     : {'[attr.required]': 'required ? "" : null'}
 })
-export class RequiredCheckBoxValidator {
-    private _required: boolean;
-    private _onChange: () => void;
+export class RequiredCheckBoxValidator extends RequiredValidator {
+    private _isRequired: boolean;
+    private _change: () => void;
 
     @Input()
     get required(): boolean /*| string*/ {
-        return this._required;
+        return this._isRequired;
     }
 
     set required(value: boolean) {
-        this._required = value != null && value !== false && `${value}` !== 'false';
-        if (this._onChange) this._onChange();
+        this._isRequired = value != null && value !== false && `${value}` !== 'false';
+        if (this._change) this._change();
     }
 
     validate(c: AbstractControl): { [key: string]: any } {
@@ -30,7 +30,7 @@ export class RequiredCheckBoxValidator {
     }
 
     registerOnValidatorChange(fn: () => void): void {
-        this._onChange = fn;
+        this._change = fn;
     }
 
 }
