@@ -44,12 +44,14 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     }
 
     updateValidityFlags(errors) {
-        this.invalid  = errors !== null && typeof errors !== 'undefined';
-        this.failures = !this.invalid ? [] : this.failures;
-        if (this.invalid) {
-            this.model.control.setErrors(errors);
-            this.failures = Object.keys(errors).map(key => this.messenger.getMessageForError(errors, key, this.label));
-        }
+        setTimeout(() => {
+            this.invalid  = errors !== null && typeof errors !== 'undefined';
+            this.failures = !this.invalid ? [] : this.failures;
+            if (this.invalid) {
+                this.model.control.setErrors(errors);
+                this.failures = Object.keys(errors).map(key => this.messenger.getMessageForError(errors, key, this.label));
+            }
+        });
     }
 
     validate(): Observable<ValidatorResults> {
@@ -69,19 +71,21 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     }
 
     ngOnInit() {
-        try {
-            this.shouldValidate  = this.shouldValidate.toString() === 'true' || this.shouldValidate === true;
-            this.model           = this.injector.get(NgControl);
-            this.messenger       = this.injector.get(ValidatorMessenger);
-            this.validators      = <any>this.injector.get(NG_VALIDATORS, []);
-            this.asyncValidators = <any>this.injector.get(NG_ASYNC_VALIDATORS, []);
-            this.initialized     = true;
-            if (this.parentFormGroup) {
-                this.parentFormGroup.addControl(this.name, this.control);
+        setTimeout(() => {
+            try {
+                this.shouldValidate  = this.shouldValidate.toString() === 'true' || this.shouldValidate === true;
+                this.model           = this.injector.get(NgControl);
+                this.messenger       = this.injector.get(ValidatorMessenger);
+                this.validators      = <any>this.injector.get(NG_VALIDATORS, []);
+                this.asyncValidators = <any>this.injector.get(NG_ASYNC_VALIDATORS, []);
+                if (this.parentFormGroup) {
+                    this.parentFormGroup.addControl(this.name, this.control);
+                }
+                this.initialized = true;
+            } catch (e) {
+                throw new Error("[(ngModel)] was not provided");
             }
-        } catch (e) {
-            throw new Error("[(ngModel)] was not provided");
-        }
+        });
     }
 
     triggerValidate() {
