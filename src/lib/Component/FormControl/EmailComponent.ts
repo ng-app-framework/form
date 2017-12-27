@@ -24,7 +24,6 @@ import {TextBoxComponent} from './TextBoxComponent';
                 <span class="fa fa-envelope"></span>
             </span>
         </text-box>
-        <pre>invalid: {{invalid}} - failures: {{failures | json}}</pre>
     `,
     styleUrls    : ['./assets/field.scss'],
     providers    : [{
@@ -55,19 +54,6 @@ export class EmailComponent extends NgFormControl<string> {
 
     ngOnInit() {
         super.ngOnInit();
-    }
-
-    triggerValidate() {
-        console.log(this.shouldValidate, this.initialized);
-        if (this.shouldValidate && this.initialized) {
-            console.log(this.label, 'validating');
-            this.validate()
-                .distinctUntilChanged()
-                .subscribe(errors => {
-                    this.updateValidityFlags(errors);
-                    console.log(this.label, errors);
-                });
-        }
     }
     isProvided() {
         return this.value && this.value.length > 0;
