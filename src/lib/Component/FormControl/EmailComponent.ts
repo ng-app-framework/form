@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild, ViewEncapsulation, Injector} from '@angular/core';
-import {FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {AbstractControl, FormControl, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
 import {TextBoxComponent} from './TextBoxComponent';
@@ -13,7 +13,6 @@ import {TextBoxComponent} from './TextBoxComponent';
                   [label]="label"
                   [(invalid)]="invalid"
                   [(failures)]="failures"
-                  [email]="isProvided()"
                   [disabled]="disabled"
                   [(ngModel)]="value"
                   [shouldValidate]="false"
@@ -45,6 +44,14 @@ export class EmailComponent extends NgFormControl<string> {
     @OnChange @Input() invalid: boolean   = false;
     @OnChange @Input() failures: string[] = [];
 
+    additionalValidators = [
+        {
+            validate: (control: AbstractControl) => {
+                return this.isProvided() && Validators.email(control) ? {email: true} : null;
+            }
+        }
+    ];
+
 
     @ViewChild('textBox') textBox: TextBoxComponent;
 
@@ -55,6 +62,7 @@ export class EmailComponent extends NgFormControl<string> {
     ngOnInit() {
         super.ngOnInit();
     }
+
     isProvided() {
         return this.value && this.value.length > 0;
     }
