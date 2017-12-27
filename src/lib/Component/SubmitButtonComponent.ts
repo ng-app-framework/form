@@ -1,6 +1,5 @@
 import {Component, Input, ViewEncapsulation, Output, EventEmitter} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {Observable} from "rxjs/Rx";
 
 @Component({
     selector     : 'submit-button',

@@ -1,5 +1,5 @@
 import {Component, Input, ViewChild, ViewEncapsulation, Injector} from '@angular/core';
-import {AbstractControl, FormControl, NG_VALUE_ACCESSOR, Validators} from "@angular/forms";
+import {AbstractControl, FormControl, NG_VALUE_ACCESSOR, Validators, FormGroup} from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
 import {TextBoxComponent} from './TextBoxComponent';
@@ -38,6 +38,7 @@ export class EmailComponent extends NgFormControl<string> {
     @OnChange @Input() required: boolean  = false;
     @OnChange @Input() disabled: boolean  = false;
     @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
     @Input() label: string                = '';
     @Input() placeholder: string          = null;
     @Input() shouldValidate               = true;

@@ -7,7 +7,7 @@ import {
     ViewChild,
     ElementRef,
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import {FormControl, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {SiteConfig, Value} from "@ng-app-framework/core";
 import {BsDatepickerDirective} from "ngx-bootstrap/datepicker";
 import {Observable} from "rxjs/Rx";
@@ -66,6 +66,8 @@ export class DatePickerComponent extends NgFormControl<string> {
     @Input() theme: string     = '';
     @Input() required: boolean;
     @Input() disabled: boolean = false;
+    @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
 
     @Input() minDate: Date;
     @Input() maxDate: Date;

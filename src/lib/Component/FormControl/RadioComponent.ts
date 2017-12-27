@@ -3,7 +3,7 @@ import {
     Inject, Injector, Output, EventEmitter
 } from '@angular/core';
 import {
-    FormControl,
+    FormControl, FormGroup,
     NG_VALUE_ACCESSOR
 } from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
@@ -57,6 +57,7 @@ export class RadioComponent extends NgFormControl<any> implements OnInit, OnDest
     @Input() name: string               = '';
     @Input() label: string              = '';
     @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
     @Input() labelPlacement: string     = 'after';
     @Input() checkedValue: any          = true;
     @Input() disabled: boolean          = false;

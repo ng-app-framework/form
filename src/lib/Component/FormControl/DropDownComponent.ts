@@ -2,7 +2,7 @@ import {
     ViewEncapsulation, Component, Input, EventEmitter, OnInit, OnDestroy, Injector,
     Inject, ViewChild, ContentChild, TemplateRef
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR} from "@angular/forms";
+import {FormControl, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {Value} from "@ng-app-framework/core";
 import {NgFormControl} from "../NgFormControl";
 
@@ -93,6 +93,8 @@ export class DropDownComponent extends NgFormControl<any> implements OnInit, OnD
     @Input() options: { text: string, [key: string]: any }[] = [];
     @Input() selectBy: string                                = 'id';
     @Input() labelField: string                              = 'text';
+    @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
 
     @Input() typeahead: EventEmitter<string> = new EventEmitter<string>();
 

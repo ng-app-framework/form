@@ -1,5 +1,8 @@
 import {EventEmitter, Injector, OnDestroy, OnInit} from "@angular/core";
-import {FormControl, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NgControl, NgModel, RequiredValidator} from "@angular/forms";
+import {
+    FormControl, FormGroup, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NgControl, NgModel,
+    RequiredValidator
+} from "@angular/forms";
 import {Value} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
 import {ValidatorMessenger} from "../Validation/Service/ValidatorMessenger";
@@ -31,6 +34,7 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
 
     model: NgModel;
     parentFormControl: FormControl;
+    parentFormGroup: FormGroup;
     messenger: ValidatorMessenger;
     validators: ValidatorArray           = [];
     asyncValidators: AsyncValidatorArray = [];
@@ -72,6 +76,9 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
             this.validators      = <any>this.injector.get(NG_VALIDATORS, []);
             this.asyncValidators = <any>this.injector.get(NG_ASYNC_VALIDATORS, []);
             this.initialized     = true;
+            if (this.parentFormGroup) {
+                this.control.setParent(this.parentFormGroup);
+            }
         } catch (e) {
             throw new Error("[(ngModel)] was not provided");
         }

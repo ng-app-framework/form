@@ -3,6 +3,8 @@ import {
     Inject, Injector
 } from '@angular/core';
 import {
+    FormControl,
+    FormGroup,
     NG_VALUE_ACCESSOR, RequiredValidator
 } from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
@@ -51,6 +53,8 @@ export class RadioGroupComponent extends NgFormControl<any> implements OnInit, O
     @Input() bindValue: string                    = 'value';
     @OnChange @Input() required: boolean          = false;
     @Input() direction: 'horizontal' | 'vertical' = 'horizontal';
+    @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
 
     @Input() options: { label: string, value: any }[] = [];
 

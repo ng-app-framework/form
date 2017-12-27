@@ -2,7 +2,7 @@ import {
     ViewEncapsulation, Component, Input, EventEmitter, OnDestroy, OnInit, ViewChild,
     Injector, KeyValueDiffers, KeyValueDiffer, DoCheck
 } from '@angular/core';
-import {AbstractControl, FormControl, NG_VALUE_ACCESSOR} from "@angular/forms";
+import {AbstractControl, FormControl, FormGroup, NG_VALUE_ACCESSOR} from "@angular/forms";
 import {NestedSearcher} from "../../Service/Impl/NestedSearcher";
 import {Async, OnChange, Value} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
@@ -61,6 +61,7 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
     @OnChange @Input() required: boolean  = false;
     @OnChange @Input() disabled: boolean  = false;
     @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
     @Input() label: string                = '';
     @Input() placeholder: string          = null;
     @Input() shouldValidate               = true;

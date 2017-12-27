@@ -3,6 +3,8 @@ import {
     Inject, Injector
 } from '@angular/core';
 import {
+    FormControl,
+    FormGroup,
     NG_VALUE_ACCESSOR, RequiredValidator
 } from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
@@ -71,6 +73,8 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
     @Input() disabled: boolean           = false;
     @Input() shouldValidate: boolean     = true;
     @OnChange @Input() required: boolean = false;
+    @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
 
     requiredChange          = new EventEmitter<boolean>();
     @Output() checkedChange = new EventEmitter<boolean>();

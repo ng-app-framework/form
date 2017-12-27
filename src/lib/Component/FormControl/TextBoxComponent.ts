@@ -2,7 +2,7 @@ import {
     Component, Input, ViewChild, ViewEncapsulation, Injector,
     Output, EventEmitter
 } from '@angular/core';
-import {NG_VALUE_ACCESSOR, FormControl} from "@angular/forms";
+import {NG_VALUE_ACCESSOR, FormControl, FormGroup} from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
 import {NgFormControl} from "../NgFormControl";
@@ -48,6 +48,7 @@ export class TextBoxComponent extends NgFormControl<string> {
     @OnChange @Input() required: boolean  = false;
     @OnChange @Input() disabled: boolean  = false;
     @Input() parentFormControl: FormControl;
+    @Input() parentFormGroup: FormGroup;
     @Input() label: string                = '';
     @Input() placeholder: string          = null;
     @Input() shouldValidate               = true;
