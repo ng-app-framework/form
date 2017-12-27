@@ -77,7 +77,7 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
             this.asyncValidators = <any>this.injector.get(NG_ASYNC_VALIDATORS, []);
             this.initialized     = true;
             if (this.parentFormGroup) {
-                this.control.setParent(this.parentFormGroup);
+                this.parentFormGroup.addControl(this.name, this.control);
             }
         } catch (e) {
             throw new Error("[(ngModel)] was not provided");
