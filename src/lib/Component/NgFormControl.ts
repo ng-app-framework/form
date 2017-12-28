@@ -47,14 +47,11 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
             this.model      = this.injector.get(NgControl);
             this.setupControl();
             this.startValidating();
-            this.initializedChange.takeUntil(this.onDestroy$).subscribe(value => {
-                if (value) {
-                    setTimeout(() => this.onLoad, 100);
-                }
+            setTimeout(() => {
+                this.initialized = true;
+                setTimeout(() => this.onLoad(), 100);
             });
-            this.initialized = true;
         } catch (e) {
-            console.log(e);
             throw new Error("[(ngModel)] was not provided");
         }
     }
@@ -83,6 +80,7 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     }
 
     touch() {
+        super.touch();
         if (!this.isTouched()) {
             this.control.markAsTouched();
         }
@@ -94,8 +92,8 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
         }
     }
 
-    isInvalid() {
-        return this.invalid && this.isTouched();
+    isInvalid$() {
+        return Observable.of(this.invalid && this.isTouched());
     }
 
     isTouched() {
@@ -106,9 +104,23 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
         return this.control ? this.control.errors : null;
     }
 
+    get failures$() {
+        return Observable.of(this.failures);
+    }
+
+    get invalid$() {
+        return Observable.of(this.invalid);
+    }
+
+    get touched$() {
+        return Observable.of(this.isTouched());
+    }
+
     get invalid() {
         if (this.failures && !this.control.invalid) {
-            this.control.setErrors(this.failures);
+            setTimeout(() => {
+                this.control.setErrors(this.failures);
+            });
         }
         return this.control ? this.control.invalid : false;
     }

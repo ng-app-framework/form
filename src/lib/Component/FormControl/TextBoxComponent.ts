@@ -12,7 +12,7 @@ import {NgFormControl} from "../NgFormControl";
     template     : `
         <ng-container *ngIf="initialized">
             <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
-                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                <validation-messages *ngIf="(isInvalid$() | async)" [errors]="failures" [label]="label">
                 </validation-messages>
                 <label [attr.for]="identifier" *ngIf="label.length > 0">
                     {{label}}
@@ -20,7 +20,7 @@ import {NgFormControl} from "../NgFormControl";
                 </label>
                 <div></div>
                 <div class="input-group ng-control" (click)="click.emit()"
-                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
+                     [ngClass]="{'ng-invalid':(isInvalid$() | async), 'ng-touched':(touched$ | async), 'ng-valid':!(isInvalid$() | async)}">
                     <ng-content select=".before-input"></ng-content>
                     <input class="form-control" type="text" #input
                            (focus)="inputFocus.emit()"

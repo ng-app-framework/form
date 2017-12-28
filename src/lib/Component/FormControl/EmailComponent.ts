@@ -1,6 +1,7 @@
 import {Component, Input, ViewChild, ViewEncapsulation, Injector} from '@angular/core';
 import {AbstractControl, FormControl, NG_VALUE_ACCESSOR, Validators, FormGroup} from "@angular/forms";
 import {OnChange} from "@ng-app-framework/core";
+import {Observable} from "rxjs/Rx";
 import {NgFormControl} from "../NgFormControl";
 import {TextBoxComponent} from './TextBoxComponent';
 
@@ -10,7 +11,7 @@ import {TextBoxComponent} from './TextBoxComponent';
         <ng-container *ngIf="initialized">
             <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate"
                  [hidden]="!initialized">
-                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                <validation-messages *ngIf="(isInvalid$() | async)" [errors]="failures$ | async" [label]="label">
                 </validation-messages>
                 <label [attr.for]="identifier" *ngIf="label.length > 0">
                     {{label}}
@@ -18,16 +19,15 @@ import {TextBoxComponent} from './TextBoxComponent';
                 </label>
                 <div></div>
                 <div class="input-group ng-control"
-                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
-            <span class="input-group-addon before-input">
-                <span class="fa fa-envelope"></span>
-            </span>
+                     [ngClass]="{'ng-invalid':(isInvalid$() | async), 'ng-touched':(touched$ | async), 'ng-valid':!(isInvalid$() | async)}">
+                    <span class="input-group-addon before-input">
+                        <span class="fa fa-envelope"></span>
+                    </span>
                     <input class="form-control"
                            type="text"
                            [placeholder]="placeholder || ''"
                            [id]="identifier"
                            [name]="name"
-                           [disabled]="disabled"
                            [(ngModel)]="value"
                            (blur)="triggerValidation()"
                     />
@@ -54,16 +54,17 @@ export class EmailComponent extends NgFormControl<string> {
     @Input() placeholder: string         = null;
     @Input() shouldValidate              = true;
 
+    shouldValidateEmail: boolean = false;
+
+    @ViewChild('textBox') textBox: TextBoxComponent;
+
     additionalValidators = [
         {
-            validate: (control: AbstractControl) => {
-                return this.isProvided() ? Validators.email(control) : null;
+            validate: control => {
+                return this.shouldValidateEmail ? Validators.email(control) : null;
             }
         }
     ];
-
-
-    @ViewChild('textBox') textBox: TextBoxComponent;
 
     constructor(public injector: Injector) {
         super(injector);
@@ -71,9 +72,10 @@ export class EmailComponent extends NgFormControl<string> {
 
     ngOnInit() {
         super.ngOnInit();
-    }
-
-    isProvided() {
-        return this.value && this.value.length > 0;
+        this.shouldValidateEmail = !!(this.value && this.value.length > 0);
+        this.valueChange.takeUntil(this.onDestroy$)
+            .subscribe(value => {
+                this.shouldValidateEmail = value && value.length > 0;
+            });
     }
 }

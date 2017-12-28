@@ -16,7 +16,7 @@ import {NgFormControl} from "../NgFormControl";
     template     : `
         <ng-container *ngIf="initialized">
             <div class="form-group">
-                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                <validation-messages *ngIf="(isInvalid$() | async)" [errors]="failures" [label]="label">
                 </validation-messages>
                 <label>
                     {{ label }}

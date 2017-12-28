@@ -28,7 +28,7 @@ import {NgFormControl} from "../NgFormControl";
                     </label>
                 </span>
                     <div class="input-group-addon ng-control"
-                         [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':control.touched, 'ng-valid':!(isInvalid()) && control.touched}">
+                         [ngClass]="{'ng-invalid':(isInvalid$() | async), 'ng-touched':(touched$ | async), 'ng-valid':!(isInvalid$() | async) && (touched$ | async)}">
                         <input readonly type="radio"
                                [id]="identifier"
                                [disabled]="disabled"

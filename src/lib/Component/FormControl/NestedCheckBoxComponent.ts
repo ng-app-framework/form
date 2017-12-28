@@ -13,7 +13,7 @@ import {NgFormControl} from "../NgFormControl";
     template     : `
         <ng-container *ngIf="initialized">
             <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
-                <validation-messages *ngIf="(invalid) && isTouched()" [errors]="failures" [label]="label">
+                <validation-messages *ngIf="(isInvalid$() | async)" [errors]="failures$ | async" [label]="label">
                 </validation-messages>
                 <label>
                     {{label}}
@@ -22,7 +22,7 @@ import {NgFormControl} from "../NgFormControl";
                 <ng-container *ngIf="areOptionsInitialized">
                     <nested-list
                             class="form-control-container"
-                            [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}"
+                            [ngClass]="{'ng-invalid':(isInvalid$() | async), 'ng-touched':(touched$ | async), 'ng-valid':!(isInvalid$() | async)}"
                             [item]="{children: initializedOptions}"
                             [containerClass]="'form-control expandable ng-control'"
                             [showLines]="false"

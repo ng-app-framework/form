@@ -18,7 +18,7 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
     template     : `
         <ng-container *ngIf="initialized">
             <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
-                <validation-messages *ngIf="(invalid) && model.control.touched" [errors]="failures" [label]="label">
+                <validation-messages *ngIf="(isInvalid$() | async)" [errors]="failures$ | async" [label]="label">
                 </validation-messages>
                 <label *ngIf="labelPlacement === 'above'">
                     {{ label }}
@@ -28,7 +28,7 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
                 <div (click)="updateState();markAsTouched();" class="input-group check-container ng-control"
                      tabindex="0"
                      #element
-                     [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
+                     [ngClass]="{'ng-invalid': isInvalid$() | async, 'ng-touched':(touched$ | async), 'ng-valid':!(isInvalid$() | async) && (touched$ | async)}"
                      [class.label-above]="labelPlacement === 'above'">
                 <span class="form-control" *ngIf="labelPlacement === 'before'">
                     <label>
