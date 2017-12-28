@@ -58,9 +58,11 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
 
     setupControl() {
         this.control = this.parentFormControl ? this.parentFormControl : this.model.control;
-        if (this.parentFormGroup) {
-            this.parentFormGroup.addControl(this.name, this.control);
-        }
+        setTimeout(() => {
+            if (this.parentFormGroup) {
+                this.parentFormGroup.addControl(this.name, this.control);
+            }
+        });
     }
 
     startValidating() {
