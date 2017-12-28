@@ -17,37 +17,40 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'date-picker',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate" [hidden]="!initialized">
-            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
-            </validation-messages>
-            <label [attr.for]="identifier" *ngIf="label.length > 0">
-                {{label}}
-                <ng-container *ngIf="required">*</ng-container>
-            </label>
-            <div></div>
-            <div class="input-group ng-control"
-                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
+        <ng-container *ngIf="initialized">
+            <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate"
+                 [hidden]="!initialized">
+                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                </validation-messages>
+                <label [attr.for]="identifier" *ngIf="label.length > 0">
+                    {{label}}
+                    <ng-container *ngIf="required">*</ng-container>
+                </label>
+                <div></div>
+                <div class="input-group ng-control"
+                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
                 <span class="input-group-addon before-input clickable" (click)="open()">
                         <span class="fa fa-calendar"></span>
                 </span>
-                <input class="form-control" type="text"
-                       [placeholder]="placeholder || ''"
-                       [id]="identifier"
-                       [name]="name"
-                       [disabled]="disabled"
-                       [(ngModel)]="value"
-                       #input
+                    <input class="form-control" type="text"
+                           [placeholder]="placeholder || ''"
+                           [id]="identifier"
+                           [name]="name"
+                           [disabled]="disabled"
+                           [(ngModel)]="value"
+                           #input
 
-                       bsDatepicker
-                       #dp="bsDatepicker"
-                       [triggers]="''"
-                       [bsConfig]="{containerClass: theme,weeks:false}"
-                       [minDate]="minDate"
-                       [maxDate]="maxDate"
-                       (blur)="onBlur()"
-                />
+                           bsDatepicker
+                           #dp="bsDatepicker"
+                           [triggers]="''"
+                           [bsConfig]="{containerClass: theme,weeks:false}"
+                           [minDate]="minDate"
+                           [maxDate]="maxDate"
+                           (blur)="triggerValidation()"
+                    />
+                </div>
             </div>
-        </div>
+        </ng-container>
     `,
     styleUrls    : ['./assets/date-picker.scss'],
     providers    : [
@@ -87,6 +90,9 @@ export class DatePickerComponent extends NgFormControl<string> {
     ngOnInit() {
         this.theme = this.theme.length > 0 ? this.theme : SiteConfig.theme;
         super.ngOnInit();
+    }
+
+    onLoad() {
         Observable.fromEvent(this.input.nativeElement, 'keydown')
             .takeUntil(this.onDestroy$)
             .subscribe((event: KeyboardEvent) => {

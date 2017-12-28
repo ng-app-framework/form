@@ -7,30 +7,33 @@ import {TextBoxComponent} from './TextBoxComponent';
 @Component({
     selector     : 'email',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate" [hidden]="!initialized">
-            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
-            </validation-messages>
-            <label [attr.for]="identifier" *ngIf="label.length > 0">
-                {{label}}
-                <ng-container *ngIf="required">*</ng-container>
-            </label>
-            <div></div>
-            <div class="input-group ng-control"
-                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
+        <ng-container *ngIf="initialized">
+            <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate"
+                 [hidden]="!initialized">
+                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                </validation-messages>
+                <label [attr.for]="identifier" *ngIf="label.length > 0">
+                    {{label}}
+                    <ng-container *ngIf="required">*</ng-container>
+                </label>
+                <div></div>
+                <div class="input-group ng-control"
+                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
             <span class="input-group-addon before-input">
                 <span class="fa fa-envelope"></span>
             </span>
-                <input class="form-control" 
-                       type="text"
-                       [placeholder]="placeholder || ''"
-                       [id]="identifier"
-                       [name]="name"
-                       [disabled]="disabled"
-                       [(ngModel)]="value"
-                       (blur)="onBlur()"
-                />
+                    <input class="form-control"
+                           type="text"
+                           [placeholder]="placeholder || ''"
+                           [id]="identifier"
+                           [name]="name"
+                           [disabled]="disabled"
+                           [(ngModel)]="value"
+                           (blur)="triggerValidation()"
+                    />
+                </div>
             </div>
-        </div>
+        </ng-container>
     `,
     styleUrls    : ['./assets/field.scss'],
     providers    : [{

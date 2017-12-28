@@ -14,26 +14,28 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'radio-group',
     template     : `
-        <div class="form-group">
-            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
-            </validation-messages>
-            <label>
-                {{ label }}
-                <span *ngIf="required">*</span>
-            </label>
-            <div></div>
-            <div class="radio-controls" [class.d-flex]="direction === 'horizontal'">
-                <ng-container *ngFor="let option of options">
-                    <radio [name]="name" 
-                           [label]="option[bindLabel]" 
-                           [(ngModel)]="value"
-                           [checkedValue]="option[bindValue]" 
-                           [parentFormControl]="control"
-                           (ngModelChange)="triggerValidation()"
-                           (onTouch)="control.markAsTouched()"></radio>
-                </ng-container>
+        <ng-container *ngIf="initialized">
+            <div class="form-group">
+                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                </validation-messages>
+                <label>
+                    {{ label }}
+                    <span *ngIf="required">*</span>
+                </label>
+                <div></div>
+                <div class="radio-controls" [class.d-flex]="direction === 'horizontal'">
+                    <ng-container *ngFor="let option of options">
+                        <radio [name]="name"
+                               [label]="option[bindLabel]"
+                               [(ngModel)]="value"
+                               [checkedValue]="option[bindValue]"
+                               [parentFormControl]="control"
+                               (ngModelChange)="triggerValidation()"
+                               (onTouch)="control.markAsTouched()"></radio>
+                    </ng-container>
+                </div>
             </div>
-        </div>
+        </ng-container>
     `,
     styleUrls    : ['./assets/check-box.scss'],
     providers    : [

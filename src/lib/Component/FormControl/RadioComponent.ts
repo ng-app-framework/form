@@ -14,33 +14,35 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'radio',
     template     : `
-        <div class="form-group validate-input">
-            <label *ngIf="labelPlacement === 'above'">
-                {{ label }}
-            </label>
-            <div></div>
-            <div (click)="check();" class="input-group check-container" tabindex="0" #element
-                 [class.label-above]="labelPlacement === 'above'">
+        <ng-container *ngIf="initialized">
+            <div class="form-group validate-input">
+                <label *ngIf="labelPlacement === 'above'">
+                    {{ label }}
+                </label>
+                <div></div>
+                <div (click)="check();" class="input-group check-container" tabindex="0" #element
+                     [class.label-above]="labelPlacement === 'above'">
                 <span class="form-control" *ngIf="labelPlacement === 'before'">
                     <label>
                         {{ label }}
                     </label>
                 </span>
-                <div class="input-group-addon ng-control"
-                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':control.touched, 'ng-valid':!(isInvalid()) && control.touched}">
-                    <input readonly type="radio"
-                           [id]="identifier"
-                           [disabled]="disabled"
-                           [checked]="value === checkedValue"
-                           tabindex="-1"/>
-                </div>
-                <span class="form-control" *ngIf="labelPlacement === 'after'">
+                    <div class="input-group-addon ng-control"
+                         [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':control.touched, 'ng-valid':!(isInvalid()) && control.touched}">
+                        <input readonly type="radio"
+                               [id]="identifier"
+                               [disabled]="disabled"
+                               [checked]="value === checkedValue"
+                               tabindex="-1"/>
+                    </div>
+                    <span class="form-control" *ngIf="labelPlacement === 'after'">
                     <label>
                         {{ label }}
                     </label>
                 </span>
+                </div>
             </div>
-        </div>
+        </ng-container>
     `,
     styleUrls    : ['./assets/check-box.scss'],
     providers    : [
@@ -54,14 +56,14 @@ import {NgFormControl} from "../NgFormControl";
 })
 export class RadioComponent extends NgFormControl<any> implements OnInit, OnDestroy {
 
-    @Input() name: string               = '';
-    @Input() label: string              = '';
+    @Input() name: string           = '';
+    @Input() label: string          = '';
     @Input() parentFormControl: FormControl;
     @Input() parentFormGroup: FormGroup;
-    @Input() labelPlacement: string     = 'after';
-    @Input() checkedValue: any          = true;
-    @Input() disabled: boolean          = false;
-             required: boolean          = false;
+    @Input() labelPlacement: string = 'after';
+    @Input() checkedValue: any      = true;
+    @Input() disabled: boolean      = false;
+             required: boolean      = false;
 
     identifier = `radio-${identifier++}`;
 
@@ -77,6 +79,8 @@ export class RadioComponent extends NgFormControl<any> implements OnInit, OnDest
 
     ngOnInit() {
         super.ngOnInit();
+    }
+    onLoad() {
         Observable.fromEvent(this.element.nativeElement, 'keydown')
             .takeUntil(this.onDestroy$)
             .subscribe((event: KeyboardEvent) => {

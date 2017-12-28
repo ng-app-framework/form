@@ -11,40 +11,42 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'nested-check-box',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
-            <validation-messages *ngIf="(invalid) && isTouched()" [errors]="failures" [label]="label">
-            </validation-messages>
-            <label>
-                {{label}}
-            </label>
-            <div></div>
-            <ng-container *ngIf="areOptionsInitialized">
-                <nested-list
-                        class="form-control-container"
-                        [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}"
-                        [item]="{children: initializedOptions}"
-                        [containerClass]="'form-control expandable ng-control'"
-                        [showLines]="false"
-                        [onCollapseAll]="onCollapseAll"
-                        [onExpandAll]="onExpandAll"
-                        [searchBy]="searchBy">
-                    <ng-template let-item>
-                        <check-box #checkbox [threeState]="hasChildren(item)"
-                                   *ngIf="item.name"
-                                   (onInit)="item.checkbox = checkbox"
-                                   [shouldValidate]="false"
-                                   labelPlacement="after"
-                                   [(ngModel)]="selection[item[selectBy]]"
-                                   (ngModelChange)="control.markAsTouched()"
-                                   (stateChange)="updateChildrenOfItem(item, $event).subscribe()"
-                                   [name]="item.name"
-                                   [label]="item.name"
-                                   [hidden]="searcher.search.length > 0 && !item['$matches'] && !item['$parentMatches']">
-                        </check-box>
-                    </ng-template>
-                </nested-list>
-            </ng-container>
-        </div>
+        <ng-container *ngIf="initialized">
+            <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
+                <validation-messages *ngIf="(invalid) && isTouched()" [errors]="failures" [label]="label">
+                </validation-messages>
+                <label>
+                    {{label}}
+                </label>
+                <div></div>
+                <ng-container *ngIf="areOptionsInitialized">
+                    <nested-list
+                            class="form-control-container"
+                            [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}"
+                            [item]="{children: initializedOptions}"
+                            [containerClass]="'form-control expandable ng-control'"
+                            [showLines]="false"
+                            [onCollapseAll]="onCollapseAll"
+                            [onExpandAll]="onExpandAll"
+                            [searchBy]="searchBy">
+                        <ng-template let-item>
+                            <check-box #checkbox [threeState]="hasChildren(item)"
+                                       *ngIf="item.name"
+                                       (onInit)="item.checkbox = checkbox"
+                                       [shouldValidate]="false"
+                                       labelPlacement="after"
+                                       [(ngModel)]="selection[item[selectBy]]"
+                                       (ngModelChange)="control.markAsTouched()"
+                                       (stateChange)="updateChildrenOfItem(item, $event).subscribe()"
+                                       [name]="item.name"
+                                       [label]="item.name"
+                                       [hidden]="searcher.search.length > 0 && !item['$matches'] && !item['$parentMatches']">
+                            </check-box>
+                        </ng-template>
+                    </nested-list>
+                </ng-container>
+            </div>
+        </ng-container>
     `,
     styleUrls    : ['./assets/nested-select.scss'],
     providers    : [{

@@ -16,40 +16,43 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
 @Component({
     selector     : 'check-box',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
-            <validation-messages *ngIf="(invalid) && model.control.touched" [errors]="failures" [label]="label">
-            </validation-messages>
-            <label *ngIf="labelPlacement === 'above'">
-                {{ label }}
-                <span *ngIf="required">*</span>
-            </label>
-            <div></div>
-            <div (click)="updateState();markAsTouched();" class="input-group check-container ng-control" tabindex="0"
-                 #element
-                 [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
-                 [class.label-above]="labelPlacement === 'above'">
+        <ng-container *ngIf="initialized">
+            <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
+                <validation-messages *ngIf="(invalid) && model.control.touched" [errors]="failures" [label]="label">
+                </validation-messages>
+                <label *ngIf="labelPlacement === 'above'">
+                    {{ label }}
+                    <span *ngIf="required">*</span>
+                </label>
+                <div></div>
+                <div (click)="updateState();markAsTouched();" class="input-group check-container ng-control"
+                     tabindex="0"
+                     #element
+                     [ngClass]="{'ng-invalid': (invalid) && model.control.touched, 'ng-touched':model.control.touched, 'ng-valid':!(invalid) && model.control.touched}"
+                     [class.label-above]="labelPlacement === 'above'">
                 <span class="form-control" *ngIf="labelPlacement === 'before'">
                     <label>
                         {{ label }}
                         <span *ngIf="required">*</span>
                     </label>
                 </span>
-                <div class="input-group-addon">
-                    <input readonly #checkbox type="checkbox"
-                           [id]="identifier"
-                           [disabled]="disabled"
-                           [attr.checked]="checked || null"
-                           [value]="checkedValue"
-                           tabindex="-1"/>
-                </div>
-                <span class="form-control" *ngIf="labelPlacement === 'after'">
+                    <div class="input-group-addon">
+                        <input readonly #checkbox type="checkbox"
+                               [id]="identifier"
+                               [disabled]="disabled"
+                               [attr.checked]="checked || null"
+                               [value]="checkedValue"
+                               tabindex="-1"/>
+                    </div>
+                    <span class="form-control" *ngIf="labelPlacement === 'after'">
                     <label>
                         {{ label }}
                         <span *ngIf="required">*</span>
                     </label>
                 </span>
+                </div>
             </div>
-        </div>
+        </ng-container>
     `,
     styleUrls    : ['./assets/check-box.scss'],
     providers    : [
@@ -89,7 +92,7 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
 
     @Output() onInit = new EventEmitter<any>();
 
-    requiredValidator:RequiredValidator = new RequiredCheckBoxValidator();
+    requiredValidator: RequiredValidator = new RequiredCheckBoxValidator();
 
     constructor(@Inject(Injector) public injector: Injector) {
         super(injector);
@@ -107,6 +110,10 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
         this.requiredChange.merge(this.stateChange).takeUntil(this.onDestroy$).subscribe(() => {
             this.updateCheckedStatus();
         });
+    }
+
+    onLoad() {
+
         Observable.fromEvent(this.element.nativeElement, 'keypress')
             .takeUntil(this.onDestroy$)
             .subscribe((event: KeyboardEvent) => {

@@ -7,7 +7,7 @@ export class NestedSearcher extends Searcher {
 
 
     updateMatches(item) {
-        item.$matches      = this.doesItemMatchSearch(item);
+        item.$matches      = this.isTermLongEnough() && this.doesItemMatchSearch(item);
         item.$childMatches = false;
         if (item.hasOwnProperty('children') && Array.isArray(item['children']) && item['children'].length > 0) {
             for (let child of item.children) {

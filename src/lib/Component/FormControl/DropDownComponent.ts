@@ -9,50 +9,51 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'drop-down',
     template     : `
-        <ng-template #defaultOption let-item>
-            {{ item.text }}
-        </ng-template>
-        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
-            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
-            </validation-messages>
-            <label [attr.for]="identifier">
-                {{ label }}
-                <ng-container *ngIf="required">*</ng-container>
-            </label>
-            <div></div>
-            <div class="input-group ng-control"
-                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!(isInvalid()) && isTouched()}"
-                 *ngIf="initialized">
+        <ng-container *ngIf="initialized">
+            <ng-template #defaultOption let-item>
+                {{ item.text }}
+            </ng-template>
+            <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
+                <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+                </validation-messages>
+                <label [attr.for]="identifier">
+                    {{ label }}
+                    <ng-container *ngIf="required">*</ng-container>
+                </label>
+                <div></div>
+                <div class="input-group ng-control"
+                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!(isInvalid()) && isTouched()}">
                 <span class="input-group-addon" *ngIf="isIconProvided() && isIconPlacementBefore()">
                     <span class="fa fa-{{icon}}"></span>
                 </span>
-                <ng-select
-                        [items]="options"
-                        [disabled]="disabled"
-                        [typeahead]="typeahead || null"
-                        [bindValue]="selectBy"
-                        [bindLabel]="labelField"
-                        [multiple]="isMultiple"
-                        [placeholder]="placeholder"
-                        [(ngModel)]="value"
-                        (blur)="onBlur()"
-                        (change)="onBlur()"
-                        #ngSelect
-                >
-                    <ng-template ng-option-tmp let-item="item">
-                        <ng-container
-                                *ngTemplateOutlet="template ? template : defaultOption;context:{$implicit: item}"></ng-container>
-                    </ng-template>
-                </ng-select>
-                <span class="input-group-addon" *ngIf="isIconProvided() && !isIconPlacementBefore()">
+                    <ng-select
+                            [items]="options"
+                            [disabled]="disabled"
+                            [typeahead]="typeahead || null"
+                            [bindValue]="selectBy"
+                            [bindLabel]="labelField"
+                            [multiple]="isMultiple"
+                            [placeholder]="placeholder"
+                            [(ngModel)]="value"
+                            (blur)="triggerValidation()"
+                            (change)="triggerValidation()"
+                            #ngSelect
+                    >
+                        <ng-template ng-option-tmp let-item="item">
+                            <ng-container
+                                    *ngTemplateOutlet="template ? template : defaultOption;context:{$implicit: item}"></ng-container>
+                        </ng-template>
+                    </ng-select>
+                    <span class="input-group-addon" *ngIf="isIconProvided() && !isIconPlacementBefore()">
                     <span class="fa fa-{{icon}}"></span>
                 </span>
+                </div>
             </div>
-        </div>
-        <ng-container *ngIf="!areOptionsProvided()">
-            <div class="alert alert-notice">
-                There are no options available.
-            </div>
+            <ng-container *ngIf="!areOptionsProvided()">
+                <div class="alert alert-notice">
+                    There are no options available.
+                </div>
+            </ng-container>
         </ng-container>
     `,
     styleUrls    : ['./assets/ng2-select.scss'],

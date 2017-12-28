@@ -67,7 +67,7 @@ export class NestedListComponent implements OnInit, OnDestroy {
     onDestroy$ = new EventEmitter<any>();
 
     @Input() searcher: NestedSearcher;
-    @Input() searchable:boolean = true;
+    @Input() searchable: boolean = true;
 
     @Input() containerClass: string = '';
 

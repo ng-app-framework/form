@@ -22,8 +22,9 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     disabledChange = new EventEmitter<boolean>();
     onDestroy$     = new EventEmitter<any>();
 
-    initialized          = false;
-    additionalValidators = [];
+    @OnChange initialized          = false;
+              initializedChange    = new EventEmitter<boolean>();
+              additionalValidators = [];
 
     model: NgModel;
     parentFormControl: FormControl;
@@ -46,8 +47,14 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
             this.model      = this.injector.get(NgControl);
             this.setupControl();
             this.startValidating();
+            this.initializedChange.takeUntil(this.onDestroy$).subscribe(value => {
+                if (value) {
+                    setTimeout(() => this.onLoad, 100);
+                }
+            });
             this.initialized = true;
         } catch (e) {
+            console.log(e);
             throw new Error("[(ngModel)] was not provided");
         }
     }
@@ -109,6 +116,10 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     protected triggerValidation() {
         this.touch();
         this.validate();
+    }
+
+    onLoad() {
+
     }
 
 }
