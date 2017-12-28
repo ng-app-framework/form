@@ -1,8 +1,9 @@
 @import "./field.scss";
 
 nested-check-box {
-    nested-list.form-control.expandable {
-        padding: 5px 10px;
+    nested-list .form-control.expandable {
+        padding: 5px 10px 5px 20px;
+        resize: vertical;
         > .parent-node {
             display: none;
         }
@@ -15,7 +16,7 @@ nested-check-box {
             margin-bottom: 0;
         }
         check-box {
-            .form-group {
+            .form-group.no-validate-input {
                 .form-control, .input-group-addon, .input-group {
                     padding: 2px 4px;
                     height: auto;
@@ -34,7 +35,7 @@ nested-check-box {
             }
         }
         .bold .form-control label {
-            font-weight: bold;
+            font-weight: bold !important;
         }
     }
     .bold {

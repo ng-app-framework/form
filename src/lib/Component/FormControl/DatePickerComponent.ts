@@ -17,8 +17,8 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'date-picker',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate" [hidden]="!initialized">
-            <validation-messages *ngIf="isInvalid()" [messages]="failures">
+        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate" [hidden]="!initialized">
+            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
             </validation-messages>
             <label [attr.for]="identifier" *ngIf="label.length > 0">
                 {{label}}
@@ -44,7 +44,7 @@ import {NgFormControl} from "../NgFormControl";
                        [bsConfig]="{containerClass: theme,weeks:false}"
                        [minDate]="minDate"
                        [maxDate]="maxDate"
-                       (blur)="control.markAsTouched()"
+                       (blur)="onBlur()"
                 />
             </div>
         </div>

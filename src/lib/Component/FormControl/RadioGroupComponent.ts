@@ -15,7 +15,7 @@ import {NgFormControl} from "../NgFormControl";
     selector     : 'radio-group',
     template     : `
         <div class="form-group">
-            <validation-messages *ngIf="(invalid) && control.touched" [messages]="failures">
+            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
             </validation-messages>
             <label>
                 {{ label }}
@@ -24,9 +24,12 @@ import {NgFormControl} from "../NgFormControl";
             <div></div>
             <div class="radio-controls" [class.d-flex]="direction === 'horizontal'">
                 <ng-container *ngFor="let option of options">
-                    <radio [name]="name" [label]="option[bindLabel]" [(ngModel)]="value" [invalid]="invalid"
-                           [checkedValue]="option[bindValue]" [parentFormControl]="control"
-                           (ngModelChange)="triggerValidate()"
+                    <radio [name]="name" 
+                           [label]="option[bindLabel]" 
+                           [(ngModel)]="value"
+                           [checkedValue]="option[bindValue]" 
+                           [parentFormControl]="control"
+                           (ngModelChange)="triggerValidation()"
                            (onTouch)="control.markAsTouched()"></radio>
                 </ng-container>
             </div>

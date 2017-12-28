@@ -1,24 +1,28 @@
 @import "./field.scss";
 
-$padding-left: 20px;
+$padding-left: 10px;
 nested-list {
     position: relative;
     z-index: 1;
-    padding-left: 10px;
     .nested-list-element {
-        padding: 5px;
+        padding: 4px 8px;
     }
-    nested-list {
-        padding-left: $padding-left;
+    .nested-list-container {
+        padding-left: 20px;
+    }
+    .top.nested-list-container {
+        padding-left: 30px;
     }
 
     .children-list {
         position: relative;
     }
+    .bold {
+        font-weight: bold;
+    }
     .parent-node {
         position: relative;
         max-width: 100%;
-        padding: 4px 8px;
         cursor: pointer;
         > .fa-plus, > .fa-minus {
             cursor: pointer;
@@ -27,10 +31,9 @@ nested-list {
             -ms-user-select: none;
             user-select: none;
             position: absolute;
-            left: -($padding-left + 8px);
+            left: -20px;
             top: 50%;
             transform: translateY(-50%);
-            background-color: #ffffff;
             display: block;
             height: auto;
             width: auto;
@@ -42,6 +45,11 @@ nested-list {
         }
     }
     .show-lines {
+
+        > .fa-plus, > .fa-minus {
+            left: -28px;
+            background-color: #ffffff;
+        }
         .parent-node-end, .list-end {
             width: 3px;
             height: 3px;
@@ -74,14 +82,14 @@ nested-list {
             }
         }
         &::after {
-            width: $padding-left;
+            width: 20px;
             height: 0;
             content: " ";
             position: absolute;
             top: 0;
             bottom: 0;
             margin: auto;
-            left: -$padding-left;
+            left: -20px;
             border-top: 1px solid #333;
             z-index: -1;
         }

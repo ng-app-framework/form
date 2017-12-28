@@ -11,34 +11,35 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'nested-check-box',
     template     : `
-        <div class="form-group">
-            <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
+        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
+            <validation-messages *ngIf="(invalid) && isTouched()" [errors]="failures" [label]="label">
             </validation-messages>
             <label>
                 {{label}}
             </label>
             <div></div>
-            <text-box [hidden]="!areOptionsInitialized" name="nested-check-box-search" class="full-width"
-                      [(ngModel)]="searcher.search"
-                      placeholder="Search ..." icon="search"
-                      shouldValidate="false"></text-box>
             <ng-container *ngIf="areOptionsInitialized">
-                <nested-list class="form-control expandable" #scrollable
-                             [element]="{children: initializedOptions}"
-                             [showLines]="false"
-                             [onCollapseAll]="onCollapseAll"
-                             [onExpandAll]="onExpandAll" [shouldDisplay$]="shouldDisplay$">
+                <nested-list
+                        class="form-control-container"
+                        [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}"
+                        [item]="{children: initializedOptions}"
+                        [containerClass]="'form-control expandable ng-control'"
+                        [showLines]="false"
+                        [onCollapseAll]="onCollapseAll"
+                        [onExpandAll]="onExpandAll"
+                        [searchBy]="searchBy">
                     <ng-template let-item>
                         <check-box #checkbox [threeState]="hasChildren(item)"
+                                   *ngIf="item.name"
                                    (onInit)="item.checkbox = checkbox"
                                    [shouldValidate]="false"
-                                   [class.bold]="shouldBold$(item) | async"
                                    labelPlacement="after"
                                    [(ngModel)]="selection[item[selectBy]]"
                                    (ngModelChange)="control.markAsTouched()"
                                    (stateChange)="updateChildrenOfItem(item, $event).subscribe()"
                                    [name]="item.name"
-                                   [label]="item.name">
+                                   [label]="item.name"
+                                   [hidden]="searcher.search.length > 0 && !item['$matches'] && !item['$parentMatches']">
                         </check-box>
                     </ng-template>
                 </nested-list>
@@ -55,18 +56,15 @@ import {NgFormControl} from "../NgFormControl";
 })
 export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnInit, OnDestroy, DoCheck {
 
-    @ViewChild('scrollable') scrollable;
 
-    @Input() name: string                 = null;
-    @OnChange @Input() required: boolean  = false;
-    @OnChange @Input() disabled: boolean  = false;
+    @Input() name: string                = null;
+    @OnChange @Input() required: boolean = false;
+    @OnChange @Input() disabled: boolean = false;
     @Input() parentFormControl: FormControl;
     @Input() parentFormGroup: FormGroup;
-    @Input() label: string                = '';
-    @Input() placeholder: string          = null;
-    @Input() shouldValidate               = true;
-    @OnChange @Input() invalid: boolean   = false;
-    @OnChange @Input() failures: string[] = [];
+    @Input() label: string               = '';
+    @Input() placeholder: string         = null;
+    @Input() shouldValidate              = true;
 
     onCollapseAll = new EventEmitter<any>();
     onExpandAll   = new EventEmitter<any>();
@@ -83,9 +81,9 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
     protected selectionDiffer: KeyValueDiffer<string, boolean>;
 
     additionalValidators = [{
-        validate: (control:AbstractControl) => {
+        validate: (control: AbstractControl) => {
             if (this.required && (!control.value || control.value.length === 0)) {
-                return {required:true};
+                return {required: true};
             }
             return null;
         }
@@ -98,6 +96,8 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
     }
 
     areOptionsInitialized = false;
+
+    shouldDisplay = {};
 
     initializeOption(list, parent = null) {
         for (let option of list) {
@@ -131,7 +131,6 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
         const changes = this.selectionDiffer.diff(this.selection);
         if (changes && this.areOptionsInitialized) {
             this.value = Object.keys(this.selection).filter(key => this.selection[key]);
-            this.triggerValidate();
         }
     }
 
@@ -142,15 +141,6 @@ export class NestedCheckBoxComponent extends NgFormControl<any[]> implements OnI
     hasChildren(item) {
         return Value.hasArrayElements(item.children);
     }
-
-    shouldDisplay$ = (item): Observable<boolean> => {
-        return this.searcher.doesItemMatchSearch$(item).flatMap(value => {
-            if (!value) {
-                return this.searcher.doesParentMatchSearch$(item);
-            }
-            return Async.getObservableForValue$(true);
-        });
-    };
 
     updateChildrenOfItem(item, checkedStatus, top = null): Observable<any> {
         top = top || item;

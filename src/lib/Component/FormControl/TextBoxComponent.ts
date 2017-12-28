@@ -10,8 +10,8 @@ import {NgFormControl} from "../NgFormControl";
 @Component({
     selector     : 'text-box',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate" [hidden]="!initialized">
-            <validation-messages *ngIf="isInvalid()" [messages]="failures">
+        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate" [hidden]="!initialized">
+            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
             </validation-messages>
             <label [attr.for]="identifier" *ngIf="label.length > 0">
                 {{label}}
@@ -28,7 +28,7 @@ import {NgFormControl} from "../NgFormControl";
                        [name]="name"
                        [disabled]="disabled"
                        [(ngModel)]="value"
-                       (blur)="onBlur()"
+                       (blur)="triggerValidation()"
                 />
                 <ng-content select=".after-input"></ng-content>
             </div>
@@ -52,8 +52,6 @@ export class TextBoxComponent extends NgFormControl<string> {
     @Input() label: string                = '';
     @Input() placeholder: string          = null;
     @Input() shouldValidate               = true;
-    @OnChange @Input() invalid: boolean   = false;
-    @OnChange @Input() failures: string[] = [];
     @Output() click                       = new EventEmitter<any>();
     @Output() inputClick                  = new EventEmitter<any>();
     @Output() inputFocusOut               = new EventEmitter<any>();
@@ -75,13 +73,13 @@ export class TextBoxComponent extends NgFormControl<string> {
             .takeUntil(this.onDestroy$)
             .subscribe((event: KeyboardEvent) => {
                 if (event.key === 'Tab') {
-                    this.onBlur();
+                    this.triggerValidation();
                 }
             });
     }
 
-    protected onBlur() {
-        this.control.markAsTouched();
+    protected triggerValidation() {
+        super.triggerValidation();
         this.inputFocusOut.emit();
     }
 }

@@ -16,8 +16,8 @@ import {RequiredCheckBoxValidator} from '../../Validation/Directive/RequiredChec
 @Component({
     selector     : 'check-box',
     template     : `
-        <div class="form-group" [class.validate-input]="shouldValidate">
-            <validation-messages *ngIf="(invalid) && model.control.touched" [messages]="failures">
+        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
+            <validation-messages *ngIf="(invalid) && model.control.touched" [errors]="failures" [label]="label">
             </validation-messages>
             <label *ngIf="labelPlacement === 'above'">
                 {{ label }}
@@ -106,7 +106,6 @@ export class CheckBoxComponent extends NgFormControl<any> implements OnInit, OnD
     watchChanges() {
         this.requiredChange.merge(this.stateChange).takeUntil(this.onDestroy$).subscribe(() => {
             this.updateCheckedStatus();
-            this.triggerValidate();
         });
         Observable.fromEvent(this.element.nativeElement, 'keypress')
             .takeUntil(this.onDestroy$)

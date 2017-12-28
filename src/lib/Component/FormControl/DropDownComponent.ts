@@ -12,8 +12,8 @@ import {NgFormControl} from "../NgFormControl";
         <ng-template #defaultOption let-item>
             {{ item.text }}
         </ng-template>
-        <div class="form-group" [class.validate-input]="shouldValidate">
-            <validation-messages *ngIf="isInvalid()" [messages]="failures">
+        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate">
+            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
             </validation-messages>
             <label [attr.for]="identifier">
                 {{ label }}
@@ -35,8 +35,8 @@ import {NgFormControl} from "../NgFormControl";
                         [multiple]="isMultiple"
                         [placeholder]="placeholder"
                         [(ngModel)]="value"
-                        (blur)="triggerValidate();control.markAsTouched()"
-                        (change)="triggerValidate();control.markAsTouched()"
+                        (blur)="onBlur()"
+                        (change)="onBlur()"
                         #ngSelect
                 >
                     <ng-template ng-option-tmp let-item="item">

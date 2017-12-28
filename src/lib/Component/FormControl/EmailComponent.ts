@@ -7,22 +7,30 @@ import {TextBoxComponent} from './TextBoxComponent';
 @Component({
     selector     : 'email',
     template     : `
-        <text-box [placeholder]="placeholder"
-                  [class.validate-input]="shouldValidate"
-                  [name]="name"
-                  [label]="label"
-                  [(invalid)]="invalid"
-                  [(failures)]="failures"
-                  [disabled]="disabled"
-                  [(ngModel)]="value"
-                  [shouldValidate]="false"
-                  [parentFormControl]="control"
-                  (inputFocusOut)="triggerValidate()"
-        >
+        <div class="form-group" [class.validate-input]="shouldValidate" [class.no-validate-input]="!shouldValidate" [hidden]="!initialized">
+            <validation-messages *ngIf="isInvalid()" [errors]="failures" [label]="label">
+            </validation-messages>
+            <label [attr.for]="identifier" *ngIf="label.length > 0">
+                {{label}}
+                <ng-container *ngIf="required">*</ng-container>
+            </label>
+            <div></div>
+            <div class="input-group ng-control"
+                 [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':isTouched(), 'ng-valid':!isInvalid()}">
             <span class="input-group-addon before-input">
                 <span class="fa fa-envelope"></span>
             </span>
-        </text-box>
+                <input class="form-control" 
+                       type="text"
+                       [placeholder]="placeholder || ''"
+                       [id]="identifier"
+                       [name]="name"
+                       [disabled]="disabled"
+                       [(ngModel)]="value"
+                       (blur)="onBlur()"
+                />
+            </div>
+        </div>
     `,
     styleUrls    : ['./assets/field.scss'],
     providers    : [{
@@ -34,21 +42,19 @@ import {TextBoxComponent} from './TextBoxComponent';
 })
 export class EmailComponent extends NgFormControl<string> {
 
-    @Input() name: string                 = null;
-    @OnChange @Input() required: boolean  = false;
-    @OnChange @Input() disabled: boolean  = false;
+    @Input() name: string                = null;
+    @OnChange @Input() required: boolean = false;
+    @OnChange @Input() disabled: boolean = false;
     @Input() parentFormControl: FormControl;
     @Input() parentFormGroup: FormGroup;
-    @Input() label: string                = '';
-    @Input() placeholder: string          = null;
-    @Input() shouldValidate               = true;
-    @OnChange @Input() invalid: boolean   = false;
-    @OnChange @Input() failures: string[] = [];
+    @Input() label: string               = '';
+    @Input() placeholder: string         = null;
+    @Input() shouldValidate              = true;
 
     additionalValidators = [
         {
             validate: (control: AbstractControl) => {
-                return this.isProvided() && Validators.email(control) ? {email: true} : null;
+                return this.isProvided() ? Validators.email(control) : null;
             }
         }
     ];

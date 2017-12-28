@@ -27,7 +27,7 @@ import {NgFormControl} from "../NgFormControl";
                     </label>
                 </span>
                 <div class="input-group-addon ng-control"
-                     [ngClass]="{'ng-invalid': (invalid) && control.touched, 'ng-touched':control.touched, 'ng-valid':!(invalid) && control.touched}">
+                     [ngClass]="{'ng-invalid': isInvalid(), 'ng-touched':control.touched, 'ng-valid':!(isInvalid()) && control.touched}">
                     <input readonly type="radio"
                            [id]="identifier"
                            [disabled]="disabled"
@@ -62,7 +62,6 @@ export class RadioComponent extends NgFormControl<any> implements OnInit, OnDest
     @Input() checkedValue: any          = true;
     @Input() disabled: boolean          = false;
              required: boolean          = false;
-    @OnChange @Input() invalid: boolean = false;
 
     identifier = `radio-${identifier++}`;
 

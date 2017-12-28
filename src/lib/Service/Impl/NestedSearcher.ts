@@ -6,6 +6,18 @@ import 'rxjs/Rx';
 export class NestedSearcher extends Searcher {
 
 
+    updateMatches(item) {
+        item.$matches      = this.doesItemMatchSearch(item);
+        item.$childMatches = false;
+        if (item.hasOwnProperty('children') && Array.isArray(item['children']) && item['children'].length > 0) {
+            for (let child of item.children) {
+                child.$parentMatches = item.$matches || item.$parentMatches || false;
+                this.updateMatches(child);
+                item.$childMatches = child.$matches || child.$childMatches || item.$childMatches;
+            }
+        }
+    }
+
     doesParentMatchSearch$(item) {
         if (item.parent) {
             if (!this.doesItemMatchSearch(item.parent)) {

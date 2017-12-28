@@ -3,7 +3,7 @@ import {
     FormControl, FormGroup, NG_ASYNC_VALIDATORS, NG_VALIDATORS, NgControl, NgModel,
     RequiredValidator
 } from "@angular/forms";
-import {Value} from "@ng-app-framework/core";
+import {OnChange, Value} from "@ng-app-framework/core";
 import {Observable} from "rxjs/Rx";
 import {ValidatorMessenger} from "../Validation/Service/ValidatorMessenger";
 import {AsyncValidatorArray, validate, ValidatorResults, ValidatorArray} from "../Validation/validate";
@@ -11,14 +11,7 @@ import {BaseValueAccessor} from "../ValueAccessor/BaseValueAccessor";
 
 export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements OnInit, OnDestroy {
 
-
-    invalid  = false;
-    failures = [];
-
     shouldValidate = true;
-
-    invalidChange  = new EventEmitter<boolean>();
-    failuresChange = new EventEmitter<string[]>();
 
     abstract name: string;
     abstract label: string;
@@ -35,66 +28,62 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     model: NgModel;
     parentFormControl: FormControl;
     parentFormGroup: FormGroup;
-    messenger: ValidatorMessenger;
-    validators: ValidatorArray           = [];
-    asyncValidators: AsyncValidatorArray = [];
+    validators: ValidatorArray = [];
+
+    control: FormControl;
 
     constructor(public injector: Injector) {
         super();
-    }
-
-    updateValidityFlags(errors) {
-        setTimeout(() => {
-            this.invalid  = errors !== null && typeof errors !== 'undefined';
-            this.failures = !this.invalid ? [] : this.failures;
-            if (this.invalid) {
-                this.model.control.setErrors(errors);
-                this.failures = Object.keys(errors).map(key => this.messenger.getMessageForError(errors, key, this.label));
-            }
-        });
-    }
-
-    validate(): Observable<ValidatorResults> {
-        return <any>validate((this.validators).concat(this.additionalValidators), this.asyncValidators)(this.model.control);
     }
 
     ngOnDestroy() {
         this.onDestroy$.emit();
     }
 
-    ngDoCheck() {
-        if (this.initialized) {
-            if (this.control.touched) {
-                this.triggerValidate();
-            }
+    ngOnInit() {
+        try {
+            this.validators = <any>this.injector.get(NG_VALIDATORS, []);
+            this.model      = this.injector.get(NgControl);
+            this.setupControl();
+            this.startValidating();
+            this.initialized = true;
+        } catch (e) {
+            throw new Error("[(ngModel)] was not provided");
         }
     }
 
-    ngOnInit() {
-        setTimeout(() => {
-            try {
-                this.shouldValidate  = this.shouldValidate.toString() === 'true' || this.shouldValidate === true;
-                this.model           = this.injector.get(NgControl);
-                this.messenger       = this.injector.get(ValidatorMessenger);
-                this.validators      = <any>this.injector.get(NG_VALIDATORS, []);
-                this.asyncValidators = <any>this.injector.get(NG_ASYNC_VALIDATORS, []);
-                if (this.parentFormGroup) {
-                    this.parentFormGroup.addControl(this.name, this.control);
-                }
-                this.initialized = true;
-            } catch (e) {
-                throw new Error("[(ngModel)] was not provided");
-            }
-        });
+    setupControl() {
+        this.control = this.parentFormControl ? this.parentFormControl : this.model.control;
+        if (this.parentFormGroup) {
+            this.parentFormGroup.addControl(this.name, this.control);
+        }
     }
 
-    triggerValidate() {
-        if (this.shouldValidate && this.initialized) {
-            this.validate()
-                .distinctUntilChanged()
-                .subscribe(errors => {
-                    this.updateValidityFlags(errors);
-                });
+    startValidating() {
+        this.shouldValidate = this.shouldValidate.toString() === 'true' || this.shouldValidate === true;
+        if (this.shouldValidate) {
+            this.control.setValidators(<any>this.validators.concat(this.additionalValidators || []));
+        }
+        this.validateOnInterval();
+    }
+
+    validateOnInterval() {
+        Observable.interval(1000)
+            .takeUntil(this.onDestroy$)
+            .subscribe(() => {
+                this.validate();
+            });
+    }
+
+    touch() {
+        if (!this.isTouched()) {
+            this.control.markAsTouched();
+        }
+    }
+
+    validate() {
+        if (this.isTouched()) {
+            this.control.updateValueAndValidity();
         }
     }
 
@@ -103,10 +92,23 @@ export abstract class NgFormControl<T> extends BaseValueAccessor<T> implements O
     }
 
     isTouched() {
-        return this.control.touched;
+        return this.control && this.control.touched;
     }
 
-    get control() {
-        return this.parentFormControl ? this.parentFormControl : this.model.control;
+    get failures() {
+        return this.control ? this.control.errors : null;
     }
+
+    get invalid() {
+        if (this.failures && !this.control.invalid) {
+            this.control.setErrors(this.failures);
+        }
+        return this.control ? this.control.invalid : false;
+    }
+
+    protected triggerValidation() {
+        this.touch();
+        this.validate();
+    }
+
 }

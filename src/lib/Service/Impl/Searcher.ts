@@ -11,7 +11,7 @@ export class Searcher {
     }
 
     doesItemMatchSearch(item: any) {
-        return !this.isTermLongEnough() || this.doesItemStringMatchSearch(item) || this.doItemPropertiesMatchSearch(item);
+        return this.doesItemStringMatchSearch(item) || this.doItemPropertiesMatchSearch(item);
     }
 
     doItemPropertiesMatchSearch(item) {
